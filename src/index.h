@@ -1,6 +1,8 @@
-// #include <ESP8266WiFi.h>
 #include <ESP8266WiFi.h>
 #include <ESP8266WebServer.h>
+#include <Streaming.h>
+#include <uptime_formatter.h>
+
 
 const char MAIN_page[] PROGMEM = R"=====(
   <!DOCTYPE html>
@@ -72,6 +74,9 @@ const char MAIN_page[] PROGMEM = R"=====(
       </form>
 
   <br><br><br>
+
+    <h3>@@uptime@@</h3>
+    <br>
 
   </body>
   </html>

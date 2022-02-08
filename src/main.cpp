@@ -1,7 +1,4 @@
-#include <ESP8266WiFi.h>
-#include <ESP8266WebServer.h>
 #include "index.h"
-
 //SSID and Password
 const char* ssid = "WeMOS";
 const char* password = "12345678";
@@ -16,8 +13,11 @@ ESP8266WebServer server(80);
 const int RedLED=15;     //D8  GPIO15
 const int GreenLED=12;  //D6  GPIO12
 const int BlueLED=13;    //D7  GPIO13
+const int sensor1=14;    //D5 GPIO14
 
+const int ledboard=2;
 
+// colors for buttons
 struct server_var {
   String setcolor;
   String mode_drum;
@@ -25,6 +25,7 @@ struct server_var {
 };
 server_var colors = {"#0284e0" , "#34495e", "#34495e"};
 
+//states of modes
 struct states {
   bool drum_state;
   bool led_state;
@@ -37,38 +38,35 @@ states mode = {false, false};
 //=======================================================================
 void handleRoot() {
   String p = MAIN_page;
-  p.replace("@@color@@",colors.setcolor);
+  p.replace("@@color@@",colors.setcolor); //Set button colors
   p.replace("@@color_drum@@",colors.mode_drum);
   p.replace("@@color_led@@",colors.mode_led);
+  p.replace("@@uptime@@", uptime_formatter::getUptime()); //Set uptime data
+  Serial << uptime_formatter::getUptime() << endl;
 
-     //Set page background color and selected color
   server.send(200, "text/html", p);
 }
 
+//active button drum
 void btn_drum(){
   colors.mode_led = "#34495e";
   colors.mode_drum ="#1072cc";
 }
 
+//active button led
 void btn_led(){
   colors.mode_led = "#1072cc";
   colors.mode_drum ="#34495e";
 }
 
+//inactive buttons
 void btn_off(){
   colors.mode_led = "#34495e";
   colors.mode_drum ="#34495e";
+  digitalWrite(RedLED, LOW);
+  digitalWrite(GreenLED, LOW);
+  digitalWrite(BlueLED, LOW);
 }
-
-void drum_visual() {
-
-if (mode.drum_state == true) {
-  Serial.print("drum work");
-  delay(300);
-}
-  }
-
-
 
 // setup color
 void handleForm() {
@@ -82,7 +80,8 @@ void handleForm() {
 
   String color = colors.setcolor;   //#RRGGBB hex string
 
-  mode.led_state = true; //update button
+  mode.led_state = true;
+  mode.drum_state = false; //update button
   btn_led();
   Serial.println(color + "_" + getcolor.length());
 
@@ -94,13 +93,7 @@ void handleForm() {
   long g = (number >> 8) & 0xFF;
   long b = number & 0xFF;
 
-  //PWM Correction
-   // r = r * 4;
-  Serial.println(r);
-   // g = g * 4;
-  Serial.println(g);
-   // b = b * 4;
-  Serial.println(b);
+  Serial <<"\n" << "R: " << r << " G: " << g << " B:" << b << "\n" <<endl;
 
   // set PWM value to pins
   analogWrite(RedLED,r);
@@ -113,17 +106,20 @@ void handleForm() {
   delay(500);
 }
 
-void handleDrum(){
+void handleDrum()
+{ //check active mode and set actual status
   if ((mode.drum_state == false && mode.led_state == false) || (mode.drum_state == false && mode.led_state == true) ) {
     mode.drum_state = true;
     mode.led_state = false;
+    digitalWrite(RedLED, LOW);
+    digitalWrite(GreenLED, LOW);
+    digitalWrite(BlueLED, LOW);
     btn_drum();
-    Serial.print("drum on");
-    // drum_visual();
+    Serial << "drum on" << endl;
   } else {
     mode.drum_state = false;
     btn_off();
-    Serial.print("drum off");
+    Serial << "drum off" << endl;
   }
 
   server.sendHeader("Location", "/");
@@ -138,13 +134,13 @@ void handleLed(){
     mode.drum_state = false;
     mode.led_state = true;
     btn_led();
-    Serial.print("led on");
+    Serial << "led on" << endl;
     handleForm();
   } else {
     mode.led_state = false;
     btn_off();
     Serial.print("led off");
-  }
+    Serial << "led off" << endl;  }
 
   server.sendHeader("Location", "/");
   server.send(302, "text/plain", "Updated light state");
@@ -160,32 +156,40 @@ void setup(){
   pinMode(RedLED,OUTPUT);
   pinMode(GreenLED,OUTPUT);
   pinMode(BlueLED,OUTPUT);
+  pinMode(sensor1,INPUT_PULLUP);
+
+  pinMode(ledboard, OUTPUT);
+
 
    WiFi.softAPConfig(local_ip, gateway, subnet); //Create AP mode
    WiFi.mode(WIFI_AP);
    WiFi.softAP(ssid, password);
 
-  Serial.print("AP Mode: "); //Debug info
-  Serial.print(ssid);
-  Serial.print(" ");
-  Serial.print(password);
-  Serial.print(" ");
+  Serial << "AP Mode: " << ssid << " " << password << "\n" << endl;  //Debug for AP info
 
   server.on("/", handleRoot);  //Associate handler function to path
   server.on("/form",handleForm);
   server.on("/handleDrum", handleDrum);
   server.on("/handleLed", handleLed);
 
-  server.begin();                           //Start server
-  Serial.println("HTTP server started");
+  server.begin();   //Start server
+  Serial << "HTTP server started" << "\n" << endl;
 }
 
 // LOOP
 void loop(){
   server.handleClient();
-
+  digitalWrite(ledboard, HIGH);
   if (mode.drum_state == true) {
-    Serial.print("drum work");
-    delay(300);
+    // Serial.print("drum work");
+    if (digitalRead(sensor1) == 1) {
+      Serial << "SENSOR" << endl;
+      digitalWrite(ledboard, LOW);
+      delay (50);
+      digitalWrite(ledboard, HIGH);
+    }
+    
+
   }
+
 }
