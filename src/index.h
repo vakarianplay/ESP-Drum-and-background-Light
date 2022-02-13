@@ -10,76 +10,102 @@ const char MAIN_page[] PROGMEM = R"=====(
   <head>
   <meta charset="utf-8" name="viewport" content="width=device-width initial-scale=1">
 
-  <title>TEST</title>
-  <style media="screen">
-    html
-    { font-family: Helvetica;
-      display: inline-block;
-      margin: 0px auto;
-      text-align: center;}
-      body{margin-top: 50px;}
-      h1 {color: #444444;margin: 50px auto 30px;}
-      h3 {color: #444444;margin-bottom: 10px;}
-      button {
-        width: 150px;
-    height: 65px;
-        border: none;
-        color: white;
-        padding: 13px 30px;
-        text-decoration: none;
-        font-size: 21px;
-        margin: 1px auto 35px;
-        cursor: pointer;
-        border-radius: 4px;
-        box-shadow: 0 0 10px rgba(0,0,0,0.5); /* Параметры тени */
-        padding: 10px;
-      }
-        input {
-          width: 80px;
-      height: 65px;
-          box-shadow: 0 0 10px rgba(0,0,0,0.5); /* Параметры тени */
-          padding: 10px;
-          border: none;
-          color: white;
-          padding: 13px 30px;
-          text-decoration: none;
-          margin: 0px auto 35px;
-          cursor: pointer;
-          border-radius: 4px;}
-        .set {
-          background-color: #3498db;
-          color: white;
-        }
+  <title>DRUM LIGHT</title>
+  <style>
+text {
+   color: #ffffff;
+  text-align: center;
+  font-weight:bold;
+}
 
+footer {
+   color: #878787;
+  font-family: 'Courier New', monospace;
+  text-align: center;
+  font-weight:regular;
+  font-size: 12px;
+}
 
-  </style>
+body {
+  background: #1c1c1c;
+
+  min-block-size: 100%;
+  min-inline-size: 100%;
+  box-sizing: border-box;
+  display: grid;
+  place-content: center;
+  font-family: Helvetica;
+  font-size: min(200%, 5vmin);
+}
+p {
+  font-family: Helvetica;
+  }
+
+html {
+  block-size: 100%;
+  inline-size: 100%;
+}
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.btn {
+	width: 190px;
+	height: 40px;
+	border: none;
+	border-radius: 15px;
+	font-size: 24px;
+	font-weight: 600;
+	text-decoration: none;
+	color: #1c1c1c;
+	background-color: #808080;
+	box-shadow: 0 4px 6px rgb(105 148 171/ 40%), 0 1px 3px rgb(0 0 0 / 8%);
+	cursor: pointer;
+	user-select: none;
+	appearance: none;
+	touch-action: manipulation;
+	vertical-align: top;
+	transition: box-shadow 0.2s;
+}
+
+input[type=color]{
+	width: 190px;
+	height: 40px;
+	border: none;
+	border-radius: 15px;
+	background: none;
+}
+
+input[type="color"]::-webkit-color-swatch-wrapper {
+	padding: 0;
+}
+input[type="color"]::-webkit-color-swatch {
+	border: solid 2px #fff;
+	border-radius: 15px;
+  box-shadow: 0 4px 6px rgb(105 148 171/ 40%), 0 1px 3px rgb(0 0 0 / 8%);
+}
+</style>
   </head>
-  <body>
+<body>
+<center><a href="/handleDrum"><button class="btn" style="background:@@color_drum@@;" type="submit" name="state">БАРАБАНЫ</button></a></center>
+     <br>
 
-
-      <h1>Контроллер тест</h1>
-      <br><br>
-
-      <a href="/handleDrum"><button style="background:@@color_drum@@;" type="submit" name="state">УДРК</button></a>
-      <br>
-
-      <a href="/handleLed"><button style="background:@@color_led@@;" type="submit" name="state">СВЕТ</button></a>
-      <br>
-      <br><br><br>
-      <form method="post" action="/form" name="pick">
-
-        <input style="background:@@color@@;" type="color" name="color" value="@@color@@" onchange="document.forms['pick'].submit();">
-        <br>
-        <span onclick="document.forms['pick'].submit();"></span>
-      </form>
-
-  <br><br><br>
-
-    <h3>@@uptime@@</h3>
-    <br>
-
+ <center><a href="/handleLed"><button class="btn" style="background:@@color_led@@;" type="submit" name="state">СВЕТ</button></a></center>
+ <br>
+ <br>
+<text><p> ВЫБОР ЦВЕТА </p></text>
+ <br>
+ <form method="post" action="/form" name="pick">
+         <center><input style="background:@@color@@;" type="color" name="color" value="@@color@@" onchange="document.forms['pick'].submit();"></center>
+         <br>
+         <span onclick="document.forms['pick'].submit();"></span>
+       </form>
+ <br>
+ <br>
+  <footer>@@uptime@@</footer>
   </body>
-  </html>
-
+ </html>
 
 )=====";

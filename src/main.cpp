@@ -1,6 +1,6 @@
 #include "index.h"
 //SSID and Password
-const char* ssid = "WeMOS";
+const char* ssid = "MetalLight";
 const char* password = "12345678";
 
 IPAddress local_ip(192,168,4,1);
@@ -13,9 +13,12 @@ ESP8266WebServer server(80);
 const int RedLED=15;     //D8  GPIO15
 const int GreenLED=12;  //D6  GPIO12
 const int BlueLED=13;    //D7  GPIO13
-const int sensor1=14;    //D5 GPIO14
+const int sensorRed=14;    //D5 GPIO14
+const int sensorBlue=16; //D0 GPIO16
 
-const int ledboard=2;
+// const int ledboard=2;
+
+int init_c=0;
 
 // colors for buttons
 struct server_var {
@@ -23,7 +26,7 @@ struct server_var {
   String mode_drum;
   String mode_led;
 };
-server_var colors = {"#0284e0" , "#34495e", "#34495e"};
+server_var colors = {"#e0e0e0" , "#808080", "#808080"};
 
 //states of modes
 struct states {
@@ -49,20 +52,20 @@ void handleRoot() {
 
 //active button drum
 void btn_drum(){
-  colors.mode_led = "#34495e";
-  colors.mode_drum ="#1072cc";
+  colors.mode_led = "#808080";
+  colors.mode_drum ="#e0e0e0";
 }
 
 //active button led
 void btn_led(){
-  colors.mode_led = "#1072cc";
-  colors.mode_drum ="#34495e";
+  colors.mode_led = "#e0e0e0";
+  colors.mode_drum ="#808080";
 }
 
 //inactive buttons
 void btn_off(){
-  colors.mode_led = "#34495e";
-  colors.mode_drum ="#34495e";
+  colors.mode_led = "#808080";
+  colors.mode_drum ="#808080";
   digitalWrite(RedLED, LOW);
   digitalWrite(GreenLED, LOW);
   digitalWrite(BlueLED, LOW);
@@ -149,6 +152,27 @@ void handleLed(){
 // return 1;
 }
 
+void start_init()
+{
+  while (init_c < 1)
+  {
+    digitalWrite(RedLED, HIGH);
+    Serial << "RED INIT ";
+    delay(50);
+    digitalWrite(GreenLED, HIGH);
+    Serial << "GREEN INIT ";
+    delay(50);
+    digitalWrite(BlueLED, HIGH);
+    Serial << "BLUE INIT ";
+    delay(100);
+    digitalWrite(RedLED, LOW);
+    digitalWrite(GreenLED, LOW);
+    digitalWrite(BlueLED, LOW);
+    Serial << "off and ready" << endl;
+    init_c +=1;
+  }
+}
+
 //SETUP
 void setup(){
   Serial.begin(9600);   //Start serial
@@ -156,9 +180,9 @@ void setup(){
   pinMode(RedLED,OUTPUT);
   pinMode(GreenLED,OUTPUT);
   pinMode(BlueLED,OUTPUT);
-  pinMode(sensor1,INPUT_PULLUP);
+  pinMode(sensorRed,INPUT_PULLUP);
+  pinMode(sensorBlue,INPUT_PULLUP);
 
-  pinMode(ledboard, OUTPUT);
 
 
    WiFi.softAPConfig(local_ip, gateway, subnet); //Create AP mode
@@ -174,22 +198,35 @@ void setup(){
 
   server.begin();   //Start server
   Serial << "HTTP server started" << "\n" << endl;
+
+  start_init();
 }
 
 // LOOP
 void loop(){
   server.handleClient();
-  digitalWrite(ledboard, HIGH);
+
   if (mode.drum_state == true) {
     // Serial.print("drum work");
-    if (digitalRead(sensor1) == 1) {
-      Serial << "SENSOR" << endl;
-      digitalWrite(ledboard, LOW);
+    if (digitalRead(sensorRed) == 1) {
+      Serial << "SENSOR RED" << endl;
+      digitalWrite(RedLED, HIGH);
       delay (50);
-      digitalWrite(ledboard, HIGH);
+      digitalWrite(RedLED, LOW);
     }
-    
-
+    if (digitalRead(sensorBlue) == 1) {
+      Serial << "SENSOR BLUE" << endl;
+      digitalWrite(BlueLED, HIGH);
+      delay (50);
+      digitalWrite(BlueLED, LOW);
+    }
+    if (digitalRead(sensorBlue) == 1 && digitalRead(sensorRed) == 1) {
+      Serial << "SENSOR BLUE AND RED" << endl;
+      digitalWrite(BlueLED, HIGH);
+      digitalWrite(RedLED, HIGH);
+      delay (50);
+      digitalWrite(BlueLED, LOW);
+      digitalWrite(RedLED, LOW);
+    }
   }
-
 }
