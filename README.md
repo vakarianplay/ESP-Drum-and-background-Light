@@ -9,4 +9,6 @@
 
 Web interface page on CodePen: https://codepen.io/uliosulio/pen/zYPrJqw
 
+Wiki: https://github.com/vakarianplay/ESP-Drum-and-background-Light/wiki
+
 ![](https://istarik.ru/uploads/images/00/00/01/2018/11/04/38c9d6.png)
