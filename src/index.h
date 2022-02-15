@@ -95,7 +95,7 @@ input[type="color"]::-webkit-color-swatch {
  <center><a href="/handleLed"><button class="btn" style="background:@@color_led@@;" type="submit" name="state">СВЕТ</button></a></center>
  <br>
  <br>
-<text><p> ВЫБОР ЦВЕТА </p></text>
+<text><p>ВЫБОР ЦВЕТА</p></text>
  <br>
  <form method="post" action="/form" name="pick">
          <center><input style="background:@@color@@;" type="color" name="color" value="@@color@@" onchange="document.forms['pick'].submit();"></center>
