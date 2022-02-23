@@ -173,41 +173,9 @@ void start_init()
   }
 }
 
-//SETUP
-void setup(){
-  Serial.begin(9600);   //Start serial
-
-  pinMode(RedLED,OUTPUT);
-  pinMode(GreenLED,OUTPUT);
-  pinMode(BlueLED,OUTPUT);
-  pinMode(sensorRed,INPUT_PULLUP);
-  pinMode(sensorBlue,INPUT_PULLUP);
-
-
-
-   WiFi.softAPConfig(local_ip, gateway, subnet); //Create AP mode
-   WiFi.mode(WIFI_AP);
-   WiFi.softAP(ssid, password);
-
-  Serial << "AP Mode: " << ssid << " " << password << "\n" << endl;  //Debug for AP info
-
-  server.on("/", handleRoot);  //Associate handler function to path
-  server.on("/form",handleForm);
-  server.on("/handleDrum", handleDrum);
-  server.on("/handleLed", handleLed);
-
-  server.begin();   //Start server
-  Serial << "HTTP server started" << "\n" << endl;
-
-  start_init();
-}
-
-// LOOP
-void loop(){
-  server.handleClient();
-
+void sensors ()
+{
   if (mode.drum_state == true) {
-    // Serial.print("drum work");
     if (digitalRead(sensorRed) == 1) {
       Serial << "SENSOR RED" << endl;
       digitalWrite(RedLED, HIGH);
@@ -229,4 +197,37 @@ void loop(){
       digitalWrite(RedLED, LOW);
     }
   }
+}
+
+//SETUP
+void setup(){
+  Serial.begin(9600);   //Start serial
+
+  pinMode(RedLED,OUTPUT);
+  pinMode(GreenLED,OUTPUT);
+  pinMode(BlueLED,OUTPUT);
+  pinMode(sensorRed,INPUT_PULLUP);
+  pinMode(sensorBlue,INPUT_PULLUP);
+
+   WiFi.softAPConfig(local_ip, gateway, subnet); //Create AP mode
+   WiFi.mode(WIFI_AP);
+   WiFi.softAP(ssid, password);
+
+  Serial << "AP Mode: " << ssid << " " << password << "\n" << endl;  //Debug for AP info
+
+  server.on("/", handleRoot);  //Associate handler function to path
+  server.on("/form",handleForm);
+  server.on("/handleDrum", handleDrum);
+  server.on("/handleLed", handleLed);
+
+  server.begin();   //Start server
+  Serial << "HTTP server started" << "\n" << endl;
+
+  start_init();
+}
+
+// LOOP
+void loop(){
+  server.handleClient();
+  sensors();
 }
