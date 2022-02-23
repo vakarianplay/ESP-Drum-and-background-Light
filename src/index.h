@@ -89,13 +89,13 @@ input[type="color"]::-webkit-color-swatch {
 </style>
   </head>
 <body>
-<center><a href="/handleDrum"><button class="btn" style="background:@@color_drum@@;" type="submit" name="state">БАРАБАНЫ</button></a></center>
+<center><a href="/handleDrum"><button class="btn" style="background:@@color_drum@@;" type="submit" name="state">DRUM LIGHT</button></a></center>
      <br>
 
- <center><a href="/handleLed"><button class="btn" style="background:@@color_led@@;" type="submit" name="state">СВЕТ</button></a></center>
+ <center><a href="/handleLed"><button class="btn" style="background:@@color_led@@;" type="submit" name="state">STATIC LIGHT</button></a></center>
  <br>
  <br>
-<text><p>ВЫБОР ЦВЕТА</p></text>
+<text><p>CHANGE COLOR</p></text>
  <br>
  <form method="post" action="/form" name="pick">
          <center><input style="background:@@color@@;" type="color" name="color" value="@@color@@" onchange="document.forms['pick'].submit();"></center>
