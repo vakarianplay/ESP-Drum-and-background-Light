@@ -86,7 +86,7 @@ void handleForm() {
   mode.led_state = true;
   mode.drum_state = false; //update button
   btn_led();
-  Serial.println(color + "_" + getcolor.length());
+  Serial << color << "_" << getcolor.length() << endl;
 
   // Get rid of '#' and convert it to dec numbers
   long number = (int) strtol( &color[1], NULL, 16);
