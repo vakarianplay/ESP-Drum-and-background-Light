@@ -3,7 +3,7 @@
 ![alt text](https://img.shields.io/badge/Library-ESP8266WiFi-228B22) ![alt text](https://img.shields.io/badge/Library-ESP8266WebServer-228B22) ![alt text](https://img.shields.io/badge/Library-Uptime%20Library-228B22) ![alt text](https://img.shields.io/badge/Library-Streaming-228B22)
 
 # ESP8266 (WeMos D1 mini)
-## Visualizer drumkit and RGB led strip controller with web interface
+## Visualizer for drumkit and RGB led strip controller with web interface
 
 
 
