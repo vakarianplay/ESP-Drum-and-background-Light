@@ -16,8 +16,6 @@ const int BlueLED=13;    //D7  GPIO13
 const int sensorRed=14;    //D5 GPIO14
 const int sensorBlue=16; //D0 GPIO16
 
-// const int ledboard=2;
-
 int init_c=0;
 
 // colors for buttons
