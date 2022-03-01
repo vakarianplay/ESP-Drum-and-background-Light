@@ -27,3 +27,7 @@ upload_speed = 115200
 upload_port = %your_com_port%
 lib_deps = mikalhart/Streaming@^1.0.0, lib/Uptime-Library-1.0.0
 ```
+
+### Fully compatible with other platforms based on ESP8266 and ESP32.
+
+If using ESP32 need include library `ESPWifi.h` and `ESPWebServer.h`
