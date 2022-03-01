@@ -24,6 +24,6 @@ platform = espressif8266
 board = d1_mini_lite
 framework = arduino
 upload_speed = 115200
-upload_port = COM7
+upload_port = %your_com_port%
 lib_deps = mikalhart/Streaming@^1.0.0, lib/Uptime-Library-1.0.0
 ```
