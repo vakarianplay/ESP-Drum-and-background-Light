@@ -12,3 +12,18 @@ Web interface page on CodePen: https://codepen.io/uliosulio/pen/zYPrJqw
 Wiki: https://github.com/vakarianplay/ESP-Drum-and-background-Light/wiki
 
 ![](https://istarik.ru/uploads/images/00/00/01/2018/11/04/38c9d6.png)
+
+***
+
+### This repository using PlatformIO.
+
+Config for project:
+```
+[env:d1_mini_lite]
+platform = espressif8266
+board = d1_mini_lite
+framework = arduino
+upload_speed = 115200
+upload_port = COM7
+lib_deps = mikalhart/Streaming@^1.0.0, lib/Uptime-Library-1.0.0
+```
