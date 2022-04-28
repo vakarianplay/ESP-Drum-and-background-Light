@@ -2,10 +2,10 @@
 #include <Servo.h>
 #include <FastBot.h>
 #include <Streaming.h>
-#define WIFI_SSID "ASS WE CAN"
-#define WIFI_PASS "13371488"
-#define BOT_TOKEN "1933129297:AAFtgv9LaOgDbT6fUKnIbd1rBsVCrIA_k2o"
-#define CHAT_ID "1401259988"
+#define WIFI_SSID "SSID HERE"
+#define WIFI_PASS "WIFI PASS HERE"
+#define BOT_TOKEN "API KEY"
+#define CHAT_ID "CHAT ID"
 
 FastBot bot(BOT_TOKEN);
 String menu1 = ("РЕЖИМ 1 \t РЕЖИМ 2 \t РЕЖИМ 3 \n Датчик движения");
