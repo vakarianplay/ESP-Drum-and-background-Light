@@ -10,3 +10,6 @@
 FastBot bot(BOT_TOKEN);
 String menu1 = ("РЕЖИМ 1 \t РЕЖИМ 2 \t РЕЖИМ 3 \n Датчик движения");
 bool movingFlag = 1;
+const int sensorPin = 15;
+int curMode;
+unsigned long lastTime;
