@@ -8,7 +8,12 @@ void connectWiFi() {
     Serial.print(".");
     if (millis() > 15000) ESP.restart();
   }
-  Serial << "Connect to " << WIFI_SSID << endl;
+  Serial << "Connect to " << WIFI_SSID << " " << WiFi.localIP() << endl;
+}
+
+void otaUpdater() {
+  httpUpdater.setup(&httpServer, "/firmware");
+  httpServer.begin();
 }
 
 void mode1() {
@@ -86,14 +91,23 @@ void newMsg(FB_msg& msg) {
   if (msg.text == "/start") {
     bot.editMenuID(bot.lastBotMsg(), menu1, "");
     bot.showMenu(menu1, msg.chatID);
+    bot.sendMessage(verBuild, msg.chatID);
+  }
+  if (msg.text == "Обновление прошивки") {
+    bot.editMenuID(bot.lastBotMsg(), menu1, "");
+    String updMsg = "Адрес для прошивки: " + WiFi.localIP().toString() + "/firmware";
+    bot.sendMessage(verBuild, msg.chatID);
+    bot.sendMessage(updMsg, msg.chatID);
   }
 
   Serial << msg.text << endl;
 }
 
 void setup() {
-  connectWiFi();
+
   Serial.begin(9600);
+  connectWiFi();
+  otaUpdater();
   Serial.println();
   bot.attach(newMsg);
 
@@ -104,5 +118,6 @@ void setup() {
 
 void loop() {
   bot.tick();
+  httpServer.handleClient();
   sensorDetect();
 }
