@@ -1,5 +1,5 @@
 #include "index.h"
-//SSID and Password
+//SSID and Password for AP
 const char* ssid = "MetalLight";
 const char* password = "12345678";
 
