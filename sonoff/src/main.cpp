@@ -1,0 +1,45 @@
+#include "main.h"
+
+
+
+void handleOn() {
+  digitalWrite(12, HIGH);
+  httpServer.send(302, "text/plain", "On");
+
+}
+
+void handleOff() {
+  digitalWrite(12, LOW);
+  httpServer.send(302, "text/plain", "Off");
+}
+
+void handleRoot() {
+  String root = "Имя сети: " + WiFi.SSID() + " | MAC: " + WiFi.macAddress() + " | IP: " + WiFi.localIP().toString();
+  httpServer.send(302, "text/plain", root);
+}
+
+
+void otaUpdater() {
+  httpUpdater.setup(&httpServer, "/firmware");
+  httpServer.on("/", handleRoot);
+  httpServer.on("/on", handleOn);
+  httpServer.on("/off", handleOff);
+  httpServer.begin();
+}
+
+void setup() {
+  pinMode(12,OUTPUT);
+  pinMode(13,OUTPUT);
+
+  digitalWrite (13, HIGH);
+  delay(100);
+  wifiManager.autoConnect("WeMos Connect");
+  otaUpdater();
+  digitalWrite (13, LOW);
+}
+
+
+
+void loop() {
+  httpServer.handleClient();
+}
