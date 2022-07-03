@@ -1,11 +1,8 @@
 #include "main.h"
 
-
-
 void handleOn() {
   digitalWrite(12, HIGH);
   httpServer.send(302, "text/plain", "On");
-
 }
 
 void handleOff() {
@@ -14,10 +11,9 @@ void handleOff() {
 }
 
 void handleRoot() {
-  String root = "Имя сети: " + WiFi.SSID() + " | MAC: " + WiFi.macAddress() + " | IP: " + WiFi.localIP().toString();
+  String root = "SSID: " + WiFi.SSID() + " | MAC: " + WiFi.macAddress() + " | IP: " + WiFi.localIP().toString();
   httpServer.send(302, "text/plain", root);
 }
-
 
 void otaUpdater() {
   httpUpdater.setup(&httpServer, "/firmware");
@@ -37,8 +33,6 @@ void setup() {
   otaUpdater();
   digitalWrite (13, LOW);
 }
-
-
 
 void loop() {
   httpServer.handleClient();
