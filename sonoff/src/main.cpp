@@ -1,12 +1,12 @@
 #include "main.h"
 
 void handleOn() {
-  digitalWrite(12, HIGH);
+  digitalWrite(relayPin, HIGH);
   httpServer.send(302, "text/plain", "On");
 }
 
 void handleOff() {
-  digitalWrite(12, LOW);
+  digitalWrite(relayPin, LOW);
   httpServer.send(302, "text/plain", "Off");
 }
 
@@ -24,14 +24,14 @@ void otaUpdater() {
 }
 
 void setup() {
-  pinMode(12,OUTPUT);
-  pinMode(13,OUTPUT);
+  pinMode(relayPin, OUTPUT);
+  pinMode(ledPin, OUTPUT);
 
-  digitalWrite (13, HIGH);
+  digitalWrite (ledPin, HIGH);
   delay(100);
-  wifiManager.autoConnect("WeMos Connect");
+  wifiManager.autoConnect("Sonoff Connect");
   otaUpdater();
-  digitalWrite (13, LOW);
+  digitalWrite (ledPin, LOW);
 }
 
 void loop() {
