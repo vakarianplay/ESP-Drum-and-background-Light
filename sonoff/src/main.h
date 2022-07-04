@@ -11,3 +11,7 @@ ESP8266WebServer httpServer(80);
 
 const int relayPin = 12;
 const int ledPin = 13;
+
+// GPIO0 — кнопка (это понятно, когда мы включали бутлоадер)
+// GPIO12 — красный светодиод и реле
+// GPIO13 — синий светодиод
