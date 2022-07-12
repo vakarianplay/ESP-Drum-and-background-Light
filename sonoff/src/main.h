@@ -4,7 +4,6 @@
 #include <WiFiManager.h>
 #include "button.h"
 
-
 WiFiManager wifiManager;
 ESP8266HTTPUpdateServer httpUpdater;
 ESP8266WebServer httpServer(80);
