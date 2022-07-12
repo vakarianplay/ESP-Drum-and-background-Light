@@ -11,7 +11,7 @@ void handleOff() {
 }
 
 void handleRoot() {
-  // String root = "Имя сети: " + WiFi.SSID() + " | MAC: " + WiFi.macAddress() + " | IP: " + WiFi.localIP().toString();
+  // String root = "SSID: " + WiFi.SSID() + " | MAC: " + WiFi.macAddress() + " | IP: " + WiFi.localIP().toString();
   httpServer.send(302, "text/plain", String(digitalRead(12)));
 }
 
