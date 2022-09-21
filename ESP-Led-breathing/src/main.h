@@ -7,8 +7,8 @@
 
 
 // Replace with your network credentials
-const char* ssid = "MUTINY";
-const char* password = "816planet";
+const char* ssid = "YOUR_SSID";
+const char* password = "YOUR_PASS";
 
 const char* PARAM_INPUT_1 = "output";
 const char* PARAM_INPUT_2 = "state";
