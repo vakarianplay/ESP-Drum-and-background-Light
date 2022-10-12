@@ -6,6 +6,7 @@
 #include <GyverNTP.h>
 #include <HTTPClient.h>
 #include "OLEDDisplayUi.h"
+// #include "WeatherStationFonts.h"
 #include "WeatherStationImages.h"
 #include "robotofont.h"
 
@@ -16,7 +17,6 @@ const int UPDATE_INTERVAL_SECS = 30 * 60;
 
 SSD1306Wire display(0x3c, 5, 4);
 OLEDDisplayUi   ui( &display );
-
 GyverNTP ntp(3);
 HTTPUpdateServer httpUpdater;
 WebServer httpServer(80);

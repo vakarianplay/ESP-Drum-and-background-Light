@@ -52,22 +52,11 @@ void wttrGet() {
       wttrGet = http.getString();
       wttrSplit(wttrGet);
     }
-    delay(300);
-    // http.begin("https://wttr.in/Electrostal?format=%C");
-    // httpCode = http.GET();
-    // if (httpCode > 0) {
-    //   wttrinCaption = http.getString();
-    //   Serial.println(wttrinCaption);
-    // }
-
     http.end();
-    delay(100);
-
 }
 
 void narodJsonGet() {
 
-  // Use WiFiClient class to create TCP connections
   WiFiClient client;
   const int httpPort = 80;
   if (!client.connect(host, httpPort)) {
@@ -113,7 +102,7 @@ void narodData() {
 
 void updateData(OLEDDisplay *display) {
   drawProgress(display, 10, "Updating time...");
-
+  delay(300);
 
   drawProgress(display, 30, "Updating NarodMon");
   narodData();
@@ -141,7 +130,6 @@ void drawDateTime(OLEDDisplay *display, OLEDDisplayUiState* state, int16_t x, in
 }
 
 void drawNarodMon(OLEDDisplay *display, OLEDDisplayUiState* state, int16_t x, int16_t y) {
-  // narodJsonGet();
   display->setTextAlignment(TEXT_ALIGN_CENTER);
   display->setFont(Roboto_12);
   display->drawString(64 + x, 0 + y, "NarodMon");
@@ -230,8 +218,6 @@ void setup() {
 
   WiFi.begin(ssid, password);
 
-
-
   int counter = 0;
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
@@ -248,8 +234,6 @@ void setup() {
 
   ntp.begin();
   otaUpdater();
-  // narodData();
-  // wttrGet();
 
   ui.setTargetFPS(30);
   ui.setActiveSymbol(activeSymbole);
