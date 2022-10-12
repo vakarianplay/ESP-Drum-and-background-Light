@@ -1,5 +1,18 @@
 #include "main.h"
 
+void otaUpdater() {
+  httpUpdater.setup(&httpServer, "/firmware");
+  httpServer.begin();
+}
+
+String getIp() {
+  String ip = WiFi.localIP().toString();
+  int index = ip.lastIndexOf('.');
+  int length = ip.length();
+  String cutIP = ip.substring(index -1, length);
+  return cutIP;
+}
+
 void drawProgress(OLEDDisplay *display, int percentage, String label) {
   display->clear();
   display->setTextAlignment(TEXT_ALIGN_CENTER);
@@ -101,6 +114,7 @@ void narodData() {
 void updateData(OLEDDisplay *display) {
   drawProgress(display, 10, "Updating time...");
 
+
   drawProgress(display, 30, "Updating NarodMon");
   narodData();
 
@@ -129,32 +143,32 @@ void drawDateTime(OLEDDisplay *display, OLEDDisplayUiState* state, int16_t x, in
 void drawNarodMon(OLEDDisplay *display, OLEDDisplayUiState* state, int16_t x, int16_t y) {
   // narodJsonGet();
   display->setTextAlignment(TEXT_ALIGN_CENTER);
-  display->setFont(ArialMT_Plain_10);
+  display->setFont(Roboto_12);
   display->drawString(64 + x, 0 + y, "NarodMon");
   display->setFont(ArialMT_Plain_24);
-  display->drawString(64 + x, 12 + y, narodValue + "°C");
+  display->drawString(64 + x, 14 + y, narodValue + "°C");
 }
 
 void drawCurrentWeather(OLEDDisplay *display, OLEDDisplayUiState* state, int16_t x, int16_t y) {
-  display->setFont(ArialMT_Plain_10);
+  display->setFont(Roboto_12);
   display->setTextAlignment(TEXT_ALIGN_CENTER);
   display->drawString(60 + x, 5 + y, wttrVar.wttrinCaption);
 
   display->setFont(ArialMT_Plain_16);
-  display->drawString(60 + x, 18 + y, wttrVar.wttrinWeather);
+  display->drawString(60 + x, 20 + y, wttrVar.wttrinWeather);
   int tempWidth = display->getStringWidth(wttrVar.wttrinWeather);
 }
 
 void drawDetailsWeather(OLEDDisplay *display, OLEDDisplayUiState* state, int16_t x, int16_t y) {
-  display->setFont(ArialMT_Plain_16);
+  display->setFont(Roboto_12);
   display->setTextAlignment(TEXT_ALIGN_CENTER);
   display->drawString(60 + x, 5 + y, "Humidity: " + wttrVar.wttrinHumidity);
 
-  display->setFont(ArialMT_Plain_16);
-  display->drawString(60 + x, 22 + y, "Press: " + wttrVar.wttrinPressure);
+  display->setFont(Roboto_12);
+  display->drawString(60 + x, 20 + y, "Press: " + wttrVar.wttrinPressure);
 
-  display->setFont(ArialMT_Plain_16);
-  display->drawString(60 + x, 40 + y, "Wind: " + wttrVar.wttrinWind);
+  display->setFont(Roboto_12);
+  display->drawString(60 + x, 36 + y, "Wind: " + wttrVar.wttrinWind);
 
 }
 //
@@ -184,18 +198,17 @@ void drawDetailsWeather(OLEDDisplay *display, OLEDDisplayUiState* state, int16_t
 
 void drawHeaderOverlay(OLEDDisplay *display, OLEDDisplayUiState* state) {
   display->setColor(WHITE);
-  display->setFont(ArialMT_Plain_10);
+  display->setFont(Roboto_8);
   String time = ntp.timeString();
   display->setTextAlignment(TEXT_ALIGN_LEFT);
   display->drawString(0, 54, time);
   display->setTextAlignment(TEXT_ALIGN_RIGHT);
-  // String temp = wunderground.getCurrentTemp() + "°C";
-  // display->drawString(128, 54, temp);
-  // display->drawHorizontalLine(0, 52, 128);
+  // String ip = WiFi.localIP().toString();
+  display->drawString(128, 54, getIp());
+  display->drawHorizontalLine(0, 52, 128);
 }
 
 void setReadyForWeatherUpdate() {
-  Serial.println("Setting readyForUpdate to true");
   readyForWeatherUpdate = true;
 }
 
@@ -234,6 +247,7 @@ void setup() {
   }
 
   ntp.begin();
+  otaUpdater();
   // narodData();
   // wttrGet();
 
@@ -254,13 +268,12 @@ void setup() {
   // Inital UI takes care of initalising the display too.
   ui.init();
 
-  Serial.println("");
-
   updateData(&display);
 }
 
 void loop() {
   ntp.tick();
+  httpServer.handleClient();
 
 
 

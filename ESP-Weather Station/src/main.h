@@ -1,10 +1,11 @@
 #include <ArduinoJson.h>
 #include <WiFi.h>
+#include <HTTPUpdateServer.h>
+#include <WebServer.h>
 #include <SSD1306Wire.h>
 #include <GyverNTP.h>
 #include <HTTPClient.h>
 #include "OLEDDisplayUi.h"
-// #include "WeatherStationFonts.h"
 #include "WeatherStationImages.h"
 #include "robotofont.h"
 
@@ -17,6 +18,8 @@ SSD1306Wire display(0x3c, 5, 4);
 OLEDDisplayUi   ui( &display );
 
 GyverNTP ntp(3);
+HTTPUpdateServer httpUpdater;
+WebServer httpServer(80);
 
 
 
