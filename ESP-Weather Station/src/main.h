@@ -6,13 +6,13 @@
 #include <GyverNTP.h>
 #include <HTTPClient.h>
 #include "OLEDDisplayUi.h"
-// #include "WeatherStationFonts.h"
 #include "WeatherStationImages.h"
 #include "robotofont.h"
 
 const char* ssid     = "MUTINY";
 const char* password = "816planet";
 
+//30 minutes update imterval
 const int UPDATE_INTERVAL_SECS = 30 * 60;
 
 SSD1306Wire display(0x3c, 5, 4);
@@ -21,13 +21,9 @@ GyverNTP ntp(3);
 HTTPUpdateServer httpUpdater;
 WebServer httpServer(80);
 
-
-
 const char* host = "narodmon.ru";
 String narodLine;
 String narodValue;
-
-
 
 struct wttrStruct{
   String wttrinWeather;
@@ -48,15 +44,12 @@ void updateData(OLEDDisplay *display);
 void drawDateTime(OLEDDisplay *display, OLEDDisplayUiState* state, int16_t x, int16_t y);
 void drawCurrentWeather(OLEDDisplay *display, OLEDDisplayUiState* state, int16_t x, int16_t y);
 void drawDetailsWeather(OLEDDisplay *display, OLEDDisplayUiState* state, int16_t x, int16_t y);
-// void drawForecast(OLEDDisplay *display, OLEDDisplayUiState* state, int16_t x, int16_t y);
 void drawNarodMon(OLEDDisplay *display, OLEDDisplayUiState* state, int16_t x, int16_t y);
-// void drawForecastDetails(OLEDDisplay *display, int x, int y, int dayIndex);
 void drawHeaderOverlay(OLEDDisplay *display, OLEDDisplayUiState* state);
 void setReadyForWeatherUpdate();
 
 FrameCallback frames[] = { drawDateTime, drawCurrentWeather, drawDetailsWeather, drawNarodMon };
 int numberOfFrames = 4;
-
 
 OverlayCallback overlays[] = { drawHeaderOverlay };
 int numberOfOverlays = 1;
