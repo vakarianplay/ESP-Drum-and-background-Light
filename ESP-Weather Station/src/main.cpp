@@ -26,8 +26,6 @@ void wttrSplit(String wttrGet) {
   StaticJsonDocument<2000> jsonBuffer;
   DeserializationError error = deserializeJson(jsonBuffer, wttrGet);
   if (error) {
-    Serial.print(F("deserializeJson() failed: "));
-    Serial.println(error.f_str());
     delay(5000);
     return;
   }
@@ -60,7 +58,6 @@ void narodJsonGet() {
   WiFiClient client;
   const int httpPort = 80;
   if (!client.connect(host, httpPort)) {
-    Serial.println("connection failed");
     return;
   }
 
@@ -70,39 +67,28 @@ void narodJsonGet() {
   client.println();
 
   delay(1000);
-  // Read all the lines of the reply from server and print them to Serial
+  
   while(client.available()){
     narodLine = client.readStringUntil('\r');
   }
-  Serial.print(narodLine);
-  Serial.println();
-  Serial.println("closing connection");
 }
 
 void narodData() {
   narodJsonGet();
   StaticJsonDocument<2000> jsonBuffer;
   DeserializationError error = deserializeJson(jsonBuffer, narodLine);
-  // Проверьте, удастся ли выполнить синтаксический анализ.
   if (error) {
-    Serial.print(F("deserializeJson() failed: "));
-    Serial.println(error.f_str());
     delay(5000);
     return;
   }
-  else {
-    Serial.println("There are no errors");
-
-  }
-
+  
   float value = jsonBuffer["sensors"][0]["value"];
-  Serial.print(value);
   narodValue = String(value);
 }
 
 void updateData(OLEDDisplay *display) {
   drawProgress(display, 10, "Updating time...");
-  delay(300);
+  delay(500);
 
   drawProgress(display, 30, "Updating NarodMon");
   narodData();
@@ -133,6 +119,7 @@ void drawNarodMon(OLEDDisplay *display, OLEDDisplayUiState* state, int16_t x, in
   display->setTextAlignment(TEXT_ALIGN_CENTER);
   display->setFont(Roboto_12);
   display->drawString(64 + x, 0 + y, "NarodMon");
+  
   display->setFont(ArialMT_Plain_24);
   display->drawString(64 + x, 14 + y, narodValue + "°C");
 }
@@ -141,7 +128,7 @@ void drawCurrentWeather(OLEDDisplay *display, OLEDDisplayUiState* state, int16_t
   display->setFont(Roboto_12);
   display->setTextAlignment(TEXT_ALIGN_CENTER);
   display->drawString(60 + x, 5 + y, wttrVar.wttrinCaption);
-
+  
   display->setFont(ArialMT_Plain_16);
   display->drawString(60 + x, 20 + y, wttrVar.wttrinWeather);
   int tempWidth = display->getStringWidth(wttrVar.wttrinWeather);
@@ -159,30 +146,6 @@ void drawDetailsWeather(OLEDDisplay *display, OLEDDisplayUiState* state, int16_t
   display->drawString(60 + x, 36 + y, "Wind: " + wttrVar.wttrinWind);
 
 }
-//
-//
-// void drawForecast(OLEDDisplay *display, OLEDDisplayUiState* state, int16_t x, int16_t y) {
-//   drawForecastDetails(display, x, y, 0);
-//   drawForecastDetails(display, x + 44, y, 2);
-//   drawForecastDetails(display, x + 88, y, 4);
-// }
-
-
-
-// void drawForecastDetails(OLEDDisplay *display, int x, int y, int dayIndex) {
-//   display->setTextAlignment(TEXT_ALIGN_CENTER);
-//   display->setFont(ArialMT_Plain_10);
-//   String day = wunderground.getForecastTitle(dayIndex).substring(0, 3);
-//   day.toUpperCase();
-//   display->drawString(x + 20, y, day);
-//
-//   display->setFont(Meteocons_Plain_21);
-//   display->drawString(x + 20, y + 12, wunderground.getForecastIcon(dayIndex));
-//
-//   display->setFont(ArialMT_Plain_10);
-//   display->drawString(x + 20, y + 34, wunderground.getForecastLowTemp(dayIndex) + "|" + wunderground.getForecastHighTemp(dayIndex));
-//   display->setTextAlignment(TEXT_ALIGN_LEFT);
-// }
 
 void drawHeaderOverlay(OLEDDisplay *display, OLEDDisplayUiState* state) {
   display->setColor(WHITE);
@@ -191,7 +154,6 @@ void drawHeaderOverlay(OLEDDisplay *display, OLEDDisplayUiState* state) {
   display->setTextAlignment(TEXT_ALIGN_LEFT);
   display->drawString(0, 54, time);
   display->setTextAlignment(TEXT_ALIGN_RIGHT);
-  // String ip = WiFi.localIP().toString();
   display->drawString(128, 54, getIp());
   display->drawHorizontalLine(0, 52, 128);
 }
@@ -203,15 +165,12 @@ void setReadyForWeatherUpdate() {
 
 void setup() {
   Serial.begin(9600);
-  Serial.println();
-  Serial.println();
 
   // initialize dispaly
   display.init();
   display.clear();
   display.display();
 
-  //display.flipScreenVertically();
   display.setFont(ArialMT_Plain_10);
   display.setTextAlignment(TEXT_ALIGN_CENTER);
   display.setContrast(255);
@@ -221,7 +180,6 @@ void setup() {
   int counter = 0;
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
-    Serial.print(".");
     display.clear();
     display.drawString(64, 10, "Connecting to WiFi");
     display.drawXbm(46, 30, 8, 8, counter % 3 == 0 ? activeSymbole : inactiveSymbole);
@@ -238,18 +196,12 @@ void setup() {
   ui.setTargetFPS(30);
   ui.setActiveSymbol(activeSymbole);
   ui.setInactiveSymbol(inactiveSymbole);
-  // You can change this to
-  // TOP, LEFT, BOTTOM, RIGHT
   ui.setIndicatorPosition(BOTTOM);
-  // Defines where the first frame is located in the bar.
   ui.setIndicatorDirection(LEFT_RIGHT);
-  // You can change the transition that is used
-  // SLIDE_LEFT, SLIDE_RIGHT, SLIDE_TOP, SLIDE_DOWN
   ui.setFrameAnimation(SLIDE_LEFT);
   ui.setFrames(frames, numberOfFrames);
   ui.setOverlays(overlays, numberOfOverlays);
   ui.setTimePerFrame(8000);
-  // Inital UI takes care of initalising the display too.
   ui.init();
 
   updateData(&display);
@@ -258,8 +210,6 @@ void setup() {
 void loop() {
   ntp.tick();
   httpServer.handleClient();
-
-
 
   if (millis() - timeSinceLastWUpdate > (1000L*UPDATE_INTERVAL_SECS)) {
     setReadyForWeatherUpdate();
@@ -275,6 +225,5 @@ void loop() {
   if (remainingTimeBudget > 0) {
     delay(remainingTimeBudget);
   }
-
 
 }
