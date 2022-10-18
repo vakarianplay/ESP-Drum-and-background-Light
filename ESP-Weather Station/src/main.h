@@ -11,9 +11,6 @@
 #include "WeatherStationImages.h"
 #include "robotofont.h"
 
-// const char* ssid     = "MUTINY";
-// const char* password = "816planet";
-
 const int UPDATE_INTERVAL_SECS = 30 * 60;
 
 
