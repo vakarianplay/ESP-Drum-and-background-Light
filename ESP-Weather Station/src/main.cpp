@@ -102,12 +102,12 @@ void narodData() {
 
 void updateData(OLEDDisplay *display) {
   drawProgress(display, 10, "Updating time...");
-  delay(300);
+  delay(500);
 
   drawProgress(display, 30, "Updating NarodMon");
   narodData();
 
-  drawProgress(display, 70, "Updating WttrIn");
+  drawProgress(display, 60, "Updating WttrIn");
   wttrGet();
 
   lastUpdate = ntp.timeString();
@@ -212,20 +212,20 @@ void setup() {
   display.clear();
   display.display();
 
-  //display.flipScreenVertically();
-  // display.setFont(ArialMT_Plain_10);
   display.setTextAlignment(TEXT_ALIGN_CENTER);
   display.setContrast(255);
 
   display.setFont(Roboto_12);
   display.drawString(60, 12, "Config WiFi:");
-  display.drawString(60, 26, "EspWeatherAP");
+  display.drawString(60, 26, "SSID: EspWeatherAP");
+  display.drawString(60, 40, "URL: 192.168.4.1");
   display.display();
   wifiManager.autoConnect("EspWeatherAP");
   // WiFi.begin(ssid, password);
 
   int counter = 0;
-  while (WiFi.status() != WL_CONNECTED) {
+//   while (WiFi.status() != WL_CONNECTED) {
+  while (counter <= 5) {
     delay(500);
     Serial.print(".");
     display.clear();
