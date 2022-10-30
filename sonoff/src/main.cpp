@@ -10,14 +10,15 @@ void handleOff() {
   httpServer.send(302, "text/plain", "Off");
 }
 
-void handleRoot() {
-  // String root = "SSID: " + WiFi.SSID() + " | MAC: " + WiFi.macAddress() + " | IP: " + WiFi.localIP().toString();
-  httpServer.send(302, "text/plain", String(digitalRead(12)));
+void handleDev() {
+  String root = "SSID: " + WiFi.SSID() + " | MAC: " + WiFi.macAddress() + " | IP: " + WiFi.localIP().toString() + "\n" + uptime_formatter::getUptime();
+    httpServer.send(302, "text/plain", root);
 }
 
 void otaUpdater() {
   httpUpdater.setup(&httpServer, "/firmware");
   httpServer.on("/", handleRoot);
+  httpServer.on("/dev", handleDev);
   httpServer.on("/on", handleOn);
   httpServer.on("/off", handleOff);
   httpServer.begin();
