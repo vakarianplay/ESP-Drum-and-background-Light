@@ -3,6 +3,7 @@
 #include <ESP8266WebServer.h>
 #include <WiFiManager.h>
 #include "button.h"
+#include "uptime_formatter.h"
 
 WiFiManager wifiManager;
 ESP8266HTTPUpdateServer httpUpdater;
