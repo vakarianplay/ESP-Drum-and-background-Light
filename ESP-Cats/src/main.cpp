@@ -19,17 +19,29 @@ void otaUpdater() {
 void mode1() {
   /* вжжжжж 1 */
   Serial << "mode1" << endl;
-  digitalWrite(15, HIGH);
-  delay(50);
-  digitalWrite(15, LOW);
+  int speed = 255;
+  analogWrite(15, 0);
+  analogWrite(13, speed);
+  delay(3000);
+  analogWrite(15, 0);
+  analogWrite(13, (speed/2));
+  delay(2000);
+  analogWrite(15, 0);
+  analogWrite(13, 0);
 }
 
 void mode2() {
   /* вжжжжж 2 */
   Serial << "mode2" << endl;
-  digitalWrite(12, HIGH);
-  delay(50);
-  digitalWrite(12, LOW);
+  int speed = 1024;
+  analogWrite(15, 0);
+  analogWrite(13, speed);
+  delay(800);
+  analogWrite(15, 0);
+  analogWrite(13, (speed/2));
+  delay(1000);
+  analogWrite(15, 0);
+  analogWrite(13, 0);
 }
 
 void mode3() {
@@ -70,9 +82,9 @@ void sensorDetect() {
 
 void newMsg(FB_msg& msg) {
   if (msg.text == "РЕЖИМ 1") {
-    // bot.sendMessage("Вращение 1", msg.chatID);
-    bot.sendMessage(String(analogRead(A0)), msg.chatID);
     mode1();
+    bot.sendMessage("Вращение 1", msg.chatID);
+    // mode1();
   }
   if (msg.text == "РЕЖИМ 2") {
     // bot.sendMessage("Вращение 2", msg.chatID);
@@ -121,28 +133,28 @@ void newMsg(FB_msg& msg) {
   Serial << msg.text << endl;
 }
 
-void apLED(){
-  digitalWrite(15, HIGH);
-}
-
-void stLED(){
-  digitalWrite(15, LOW);
-  digitalWrite(13, HIGH);
-}
+// void apLED(){
+//   digitalWrite(15, HIGH);
+// }
+//
+// void stLED(){
+//   digitalWrite(15, LOW);
+//   digitalWrite(13, HIGH);
+// }
 
 void setup() {
   Serial.begin(9600);
   Serial.println();
   pinMode(15, OUTPUT);
   pinMode(13, OUTPUT);
-  pinMode(12, OUTPUT);
-  pinMode(4, OUTPUT);
-  pinMode(A0, INPUT);
+  // pinMode(12, OUTPUT);
+  // pinMode(4, OUTPUT);
+  // pinMode(A0, INPUT);
   // connectWiFi();
-  apLED();
+  // apLED();
   wifiManager.autoConnect("WeMos Connect");
 
-  stLED();
+  // stLED();
   otaUpdater();
   bot.attach(newMsg);
 }
