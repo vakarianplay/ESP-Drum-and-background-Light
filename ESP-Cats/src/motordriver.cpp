@@ -33,3 +33,8 @@ void MotorDriver::stopMotor()
     analogWrite(pinA, 0);
     analogWrite(pinB, 0);
 }
+
+void MotorDriver::startMotor()
+{
+    moveForward(255, 150);
+}

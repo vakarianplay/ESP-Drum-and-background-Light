@@ -1,7 +1,4 @@
-#ifndef MOTORDRIVER_H
-#define MOTORDRIVER_H
 #include "Arduino.h"
-#include <iostream>
 
 class MotorDriver
 {
@@ -10,10 +7,9 @@ public:
     void moveForward(uint8_t speed, uint16_t delayTime);
     void moveBackward(uint8_t speed, uint16_t delayTime);
     void stopMotor();
+    void startMotor();
 
 private:
     uint8_t pinA;
     uint8_t pinB;
 };
-
-#endif // MOTORDRIVER_H
