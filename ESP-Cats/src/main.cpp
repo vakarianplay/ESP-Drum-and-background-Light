@@ -1,16 +1,5 @@
 #include "main.h"
 
-void connectWiFi() {
-  delay(2000);
-  WiFi.begin(WIFI_SSID, WIFI_PASS);
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
-    Serial.print(".");
-    if (millis() > 15000) ESP.restart();
-  }
-  Serial << "Connect to " << WIFI_SSID << " " << WiFi.localIP() << endl;
-}
-
 void otaUpdater() {
   httpUpdater.setup(&httpServer, "/firmware");
   httpServer.begin();
@@ -19,34 +8,68 @@ void otaUpdater() {
 void mode1() {
   /* вжжжжж 1 */
   Serial << "mode1" << endl;
-  int speed = 255;
-  analogWrite(15, 0);
-  analogWrite(13, speed);
-  delay(3000);
-  analogWrite(15, 0);
-  analogWrite(13, (speed/2));
-  delay(2000);
-  analogWrite(15, 0);
-  analogWrite(13, 0);
+
+  motor.startMotor();
+  // motor.moveForward(255, 150);
+  motor.moveForward(80, 1800);
+  motor.moveBackward(180, 500);
+  motor.moveForward(150, 800);
+  motor.moveBackward(200, 1300);
+  motor.moveForward(255, 2000);
+  motor.moveBackward(90, 1500);
+
+  motor.stopMotor();
+
 }
 
 void mode2() {
   /* вжжжжж 2 */
   Serial << "mode2" << endl;
-  int speed = 1024;
-  analogWrite(15, 0);
-  analogWrite(13, speed);
-  delay(800);
-  analogWrite(15, 0);
-  analogWrite(13, (speed/2));
-  delay(1000);
-  analogWrite(15, 0);
-  analogWrite(13, 0);
+
+  motor.startMotor();
+
+  motor.moveForward(255, 150);
+  motor.moveForward(90, 1800);
+  motor.moveForward(240, 2500);
+  motor.moveBackward(200, 2300);
+  motor.moveBackward(120, 1500);
+  motor.moveForward(180, 1000);
+
+  motor.stopMotor();
+
 }
 
 void mode3() {
   /* вжжжжж 3 */
-  Serial << "mode3" << endl;
+
+  motor.startMotor();
+
+  motor.moveForward(255, 150);
+  motor.moveForward(250, 2200);
+  motor.moveForward(100, 600);
+  motor.moveForward(80, 2150);
+  motor.moveForward(250, 3100);
+
+  motor.stopMotor();
+}
+
+void mode4() {
+  /* вжжжжж 4 */
+  motor.startMotor();
+
+  for (int i = 0; i < 10; i++) {
+    motor.moveForward(255, 150);
+    motor.moveForward(250, 600);
+    motor.moveForward(100, 600);
+    motor.moveForward(80, 700);
+    motor.moveForward(250, 800);
+
+    motor.moveBackward(200, 600);
+    motor.moveBackward(90, 600);
+    motor.moveBackward(255, 500);
+    motor.moveBackward(120, 600);
+  }
+  motor.stopMotor();
 }
 
 void chooseMode(){
@@ -70,14 +93,14 @@ void chooseMode(){
 }
 
 void sensorDetect() {
-  if (movingFlag) {
-    if (digitalRead(sensorPin) == 1) {
-      if (millis() - lastTime > 5000) { //delay (5000)
-        chooseMode();
-        lastTime = millis();
-      }
-    }
-  }
+  // if (movingFlag) {
+  //   if (digitalRead(sensorPin) == 1) {
+  //     if (millis() - lastTime > 5000) { //delay (5000)
+  //       chooseMode();
+  //       lastTime = millis();
+  //     }
+  //   }
+  // }
 }
 
 void newMsg(FB_msg& msg) {
@@ -97,6 +120,11 @@ void newMsg(FB_msg& msg) {
     // bot.editMenuID(bot.lastBotMsg(), menu1, "");
     bot.sendMessage("Вращение 3", msg.chatID);
     mode3();
+  }
+  if (msg.text == "РЕЖИМ 4") {
+    // bot.editMenuID(bot.lastBotMsg(), menu1, "");
+    bot.sendMessage("Вращение 4", msg.chatID);
+    mode4();
   }
   if (msg.text == "Датчик движения") {
     // bot.editMenuID(bot.lastBotMsg(), menu1, "");
