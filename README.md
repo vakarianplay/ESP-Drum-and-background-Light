@@ -1,19 +1,41 @@
-![alt text](https://img.shields.io/badge/WeMos%20D1%20mini-ESP8266-blue)
-
-![alt text](https://img.shields.io/badge/Library-ESP8266WiFi-228B22) ![alt text](https://img.shields.io/badge/Library-ESP8266WebServer-228B22) ![alt text](https://img.shields.io/badge/Library-Uptime%20Library-228B22) ![alt text](https://img.shields.io/badge/Library-Streaming-228B22)
-
-# ESP8266 (WeMos D1 mini)
-## Visualizer for drumkit and RGB led strip controller with web interface
+![alt text](https://img.shields.io/badge/Chip-ESP8266-blue) ![alt text](https://img.shields.io/badge/Chip-ESP32-blue)
 
 
+# Visualizer for drumkit and RGB led strip
 
-Web interface page on CodePen: https://codepen.io/uliosulio/pen/zYPrJqw
+Project of controller for RGP led strip for drumkit with web interface and cURL control.
 
-Wiki: https://github.com/vakarianplay/ESP-Drum-and-background-Light/wiki
+**https://github.com/vakarianplay/ESP-Projects/tree/main/ESP-Drum-and-Light**
 
-![](https://istarik.ru/uploads/images/00/00/01/2018/11/04/38c9d6.png)
+![alt text](https://github.com/vakarianplay/readmepic/blob/main/drum_light.jpg)
 
 ***
+
+# Led breathing interface
+
+Async webinterface for control breathing RGB led modes
+
+**https://github.com/vakarianplay/ESP-Projects/tree/main/ESP-Led-breathing**
+
+![alt text](https://github.com/vakarianplay/readmepic/blob/main/breath.jpg)
+
+***
+
+
+# Sonoff cURL switch
+Light-weight firmware for Sonoff Basic relay with http GET requests
+
+**https://github.com/vakarianplay/ESP-Projects/tree/main/sonoff**
+
+***
+
+# ESP Weather station
+Weather station on SSD1306 oled display. Weather data gets from wttr.in and narodmon.ru
+
+**https://github.com/vakarianplay/ESP-Projects/tree/main/ESP-Weather%20Station**
+
+***
+
 
 ### This repository using PlatformIO.
 
@@ -25,7 +47,7 @@ board = d1_mini_lite
 framework = arduino
 upload_speed = 115200
 upload_port = %your_com_port%
-lib_deps = mikalhart/Streaming@^1.0.0, lib/Uptime-Library-1.0.0
+lib_deps = %place_libs_here%
 ```
 
 ### Fully compatible with other platforms based on ESP8266 and ESP32.
