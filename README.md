@@ -1,4 +1,6 @@
-![alt text](https://img.shields.io/badge/Chip-ESP8266-blue) ![alt text](https://img.shields.io/badge/Chip-ESP32-blue)
+![alt text](https://img.shields.io/badge/Chip-ESP8266-blue?style=for-the-badge&logo=Espressif) ![alt text](https://img.shields.io/badge/Chip-ESP32-blue?style=for-the-badge&logo=Espressif)
+
+![alt text](https://img.shields.io/badge/Core-PlatformIO-blue?style=flat-square)
 
 
 # Visualizer for drumkit and RGB led strip
