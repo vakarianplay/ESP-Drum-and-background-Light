@@ -38,6 +38,15 @@ Weather station on SSD1306 oled display. Weather data gets from wttr.in and naro
 
 ***
 
+# ESP Cat toy
+Cat wheel toy with control by telegram bot and moving sensor.
+
+![alt text](https://img.shields.io/badge/Status-process-important?style=for-the-badge&logo=Buddy)
+
+**https://github.com/vakarianplay/ESP-Projects/tree/main/ESP-Cats**
+
+***
+
 
 ### This repository using PlatformIO.
 
