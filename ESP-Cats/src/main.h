@@ -18,7 +18,9 @@ String menu1 = ("РЕЖИМ 1 \t РЕЖИМ 2 \t РЕЖИМ 3 \t РЕЖИМ 4 \n
 String verBuild = "Версия прошивки: 0.051 moving test";
 bool movingFlag = 1;
 // const int sensorPin = 15;
-int curMode;
+const uint8_t indicatorRed = 5; //D1
+const uint8_t indicatorGreen = 4; //D2
+uint8_t curMode;
 unsigned long lastTime;
 
 MotorDriver motor(15, 13);
