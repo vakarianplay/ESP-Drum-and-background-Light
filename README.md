@@ -5,6 +5,8 @@
 
 # Visualizer for drumkit and RGB led strip
 
+![alt text](https://img.shields.io/badge/Status-complete-darkgreen?style=for-the-badge&logo=Buddy)
+
 Project of controller for RGP led strip for drumkit with web interface and cURL control.
 
 **https://github.com/vakarianplay/ESP-Projects/tree/main/ESP-Drum-and-Light**
@@ -14,6 +16,8 @@ Project of controller for RGP led strip for drumkit with web interface and cURL 
 ***
 
 # Led breathing interface
+
+![alt text](https://img.shields.io/badge/Status-complete-darkgreen?style=for-the-badge&logo=Buddy)
 
 Async webinterface for control breathing RGB led modes
 
@@ -25,6 +29,9 @@ Async webinterface for control breathing RGB led modes
 
 
 # Sonoff cURL switch
+
+![alt text](https://img.shields.io/badge/Status-complete-darkgreen?style=for-the-badge&logo=Buddy)
+
 Light-weight firmware for Sonoff Basic relay with http GET requests
 
 **https://github.com/vakarianplay/ESP-Projects/tree/main/sonoff**
@@ -32,6 +39,9 @@ Light-weight firmware for Sonoff Basic relay with http GET requests
 ***
 
 # ESP Weather station
+
+![alt text](https://img.shields.io/badge/Status-process-important?style=for-the-badge&logo=Buddy)
+
 Weather station on SSD1306 oled display. Weather data gets from wttr.in and narodmon.ru
 
 **https://github.com/vakarianplay/ESP-Projects/tree/main/ESP-Weather%20Station**
@@ -39,9 +49,10 @@ Weather station on SSD1306 oled display. Weather data gets from wttr.in and naro
 ***
 
 # ESP Cat toy
-Cat wheel toy with control by telegram bot and moving sensor.
 
 ![alt text](https://img.shields.io/badge/Status-process-important?style=for-the-badge&logo=Buddy)
+
+Cat wheel toy with control by telegram bot and moving sensor.
 
 **https://github.com/vakarianplay/ESP-Projects/tree/main/ESP-Cats**
 
