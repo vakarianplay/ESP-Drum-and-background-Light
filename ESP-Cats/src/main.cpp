@@ -95,9 +95,9 @@ void chooseMode(){
 void sensorDetect() {
   // if (movingFlag) {
   //   if (digitalRead(sensorPin) == 1) {
-  //     if (millis() - lastTime > 5000) { //delay (5000)
+  //     if (millis() - lastIndication > 5000) { //delay (5000)
   //       chooseMode();
-  //       lastTime = millis();
+  //       lastIndication = millis();
   //     }
   //   }
   // }
@@ -161,28 +161,36 @@ void newMsg(FB_msg& msg) {
   Serial << msg.text << endl;
 }
 
-// void apLED(){
-//   digitalWrite(15, HIGH);
-// }
-//
-// void stLED(){
-//   digitalWrite(15, LOW);
-//   digitalWrite(13, HIGH);
-// }
+void initDev(){
+  for (int i = 0; i < 4; i++){
+    digitalWrite(indicatorRed, HIGH);
+    delay(100);
+    digitalWrite(indicatorRed, LOW);
+    delay(100);
+  }
+  digitalWrite(indicatorRed, HIGH);
+}
+
+void indicatorTicker(){
+  if (millis() - lastIndication > 3000) {
+        lastIndication = millis();
+        digitalWrite(indicatorGreen, HIGH);
+      }
+  if (millis() - lastIndication > 500) {
+        digitalWrite(indicatorGreen, LOW);
+      }
+}
 
 void setup() {
   Serial.begin(9600);
   Serial.println();
   pinMode(15, OUTPUT);
   pinMode(13, OUTPUT);
-  // pinMode(12, OUTPUT);
-  // pinMode(4, OUTPUT);
-  // pinMode(A0, INPUT);
-  // connectWiFi();
-  // apLED();
+  pinMode(indicatorRed, OUTPUT);
+  pinMode(indicatorGreen, OUTPUT);
+  initDev();
   wifiManager.autoConnect("WeMos Connect");
 
-  // stLED();
   otaUpdater();
   bot.attach(newMsg);
 }
@@ -190,5 +198,6 @@ void setup() {
 void loop() {
   bot.tick();
   httpServer.handleClient();
+  indicatorTicker();
   // sensorDetect();
 }

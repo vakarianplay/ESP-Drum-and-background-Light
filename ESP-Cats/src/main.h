@@ -22,5 +22,6 @@ const uint8_t indicatorRed = 5; //D1
 const uint8_t indicatorGreen = 4; //D2
 uint8_t curMode;
 unsigned long lastTime;
+unsigned long lastIndication;
 
 MotorDriver motor(15, 13);
