@@ -93,14 +93,14 @@ void chooseMode(){
 }
 
 void sensorDetect() {
-  // if (movingFlag) {
-  //   if (digitalRead(sensorPin) == 1) {
-  //     if (millis() - lastIndication > 5000) { //delay (5000)
-  //       chooseMode();
-  //       lastIndication = millis();
-  //     }
-  //   }
-  // }
+  if (movingFlag) {
+    if (digitalRead(sensorPin) == 1) {
+      if (millis() - lastTime > 8000) { //delay (8000)
+        chooseMode();
+        lastTime = millis();
+      }
+    }
+  }
 }
 
 void newMsg(FB_msg& msg) {
@@ -188,11 +188,14 @@ void setup() {
   pinMode(13, OUTPUT);
   pinMode(indicatorRed, OUTPUT);
   pinMode(indicatorGreen, OUTPUT);
+  pinMode(sensorPin, INPUT);
   initDev();
   wifiManager.autoConnect("WeMos Connect");
 
   otaUpdater();
   bot.attach(newMsg);
+
+  digitalWrite(indicatorRed, LOW);
 }
 
 void loop() {
