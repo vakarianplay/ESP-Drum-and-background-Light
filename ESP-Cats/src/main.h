@@ -15,7 +15,7 @@ ESP8266HTTPUpdateServer httpUpdater;
 ESP8266WebServer httpServer(80);
 
 String menu1 = ("РЕЖИМ 1 \t РЕЖИМ 2 \t РЕЖИМ 3 \t РЕЖИМ 4 \n Датчик движения \n Обновление прошивки \t Состояние сети");
-String verBuild = "Версия прошивки: 0.052 moving test";
+String verBuild = "Версия прошивки: 0.052 led indication";
 bool movingFlag = 1;
 const uint8_t sensorPin = 12;
 const uint8_t indicatorRed = 5; //D1
