@@ -105,9 +105,8 @@ void sensorDetect() {
 
 void newMsg(FB_msg& msg) {
   if (msg.text == "РЕЖИМ 1") {
-    mode1();
     bot.sendMessage("Вращение 1", msg.chatID);
-    // mode1();
+    mode1();
   }
   if (msg.text == "РЕЖИМ 2") {
     // bot.sendMessage("Вращение 2", msg.chatID);
