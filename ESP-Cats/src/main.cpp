@@ -109,7 +109,7 @@ void newMsg(FB_msg& msg) {
     mode1();
   }
   if (msg.text == "РЕЖИМ 2") {
-    // bot.sendMessage("Вращение 2", msg.chatID);
+    bot.sendMessage("Вращение 2", msg.chatID);
     FB_Time formTime = bot.getTime(3);
     bot.sendMessage(formTime.timeString(), msg.chatID);
     bot.sendMessage(formTime.dateString(), msg.chatID);
@@ -128,12 +128,12 @@ void newMsg(FB_msg& msg) {
   if (msg.text == "Датчик движения") {
     // bot.editMenuID(bot.lastBotMsg(), menu1, "");
     if (movingFlag) {
-      movingFlag = 0;
-      digitalWrite(4, LOW);
+      movingFlag = false;
+      digitalWrite(indicatorRed, LOW);
       bot.sendMessage("Датчик движения отключен", msg.chatID);
     } else {
-      movingFlag = 1;
-      digitalWrite(4, HIGH);
+      movingFlag = true;
+      digitalWrite(indicatorRed, HIGH);
       bot.sendMessage("Датчик движения включен", msg.chatID);
     }
   }
