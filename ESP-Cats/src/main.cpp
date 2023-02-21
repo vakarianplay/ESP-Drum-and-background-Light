@@ -180,6 +180,19 @@ void indicatorTicker(){
       }
 }
 
+void indicatorMovTicker(){
+	if (movingFlag){	
+	  if (millis() - lastIndicationMov > 2000) {
+			lastIndicationMov = millis();
+			digitalWrite(indicatorGreen, LOW);
+			digitalWrite(indicatorRed, HIGH);
+		  }
+	  if (millis() - lastIndicationMov > 400) {
+			digitalWrite(indicatorRed, LOW);
+		  }
+	}
+}
+
 void setup() {
   Serial.begin(9600);
   Serial.println();
