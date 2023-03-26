@@ -23,4 +23,6 @@ ESP8266WebServer httpServer(80);
 
 float Temperature;
 float Humidity;
-// const float coeff = 
+
+const float TempCoeff = 2.1;
+const float HumCoeff = 5.7;

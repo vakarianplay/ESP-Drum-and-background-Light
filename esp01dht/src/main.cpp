@@ -61,8 +61,8 @@ String SendHTML(float TempCstat, float Humiditystat){
 
 void handleRoot() {
 
-  Temperature = dht.readTemperature(); // Gets the values of the temperature
-  Humidity = dht.readHumidity(); // Gets the values of the humidity
+  Temperature = dht.readTemperature() - TempCoeff; // Gets the values of the temperature
+  Humidity = dht.readHumidity() + HumCoeff; // Gets the values of the humidity
   httpServer.send(200, "text/html", SendHTML(Temperature,Humidity));
 }
 
@@ -71,12 +71,12 @@ void handleNotFound(){
 }
 
 void handleTemp(){
-  Temperature = dht.readTemperature();
+  Temperature = dht.readTemperature() - TempCoeff;
   httpServer.send(404, "text/plain", String(Temperature));
 }
 
 void handleHum(){
-  Humidity = dht.readHumidity();
+  Humidity = dht.readHumidity() + HumCoeff;
   httpServer.send(404, "text/plain", String(Humidity));
 }
 
