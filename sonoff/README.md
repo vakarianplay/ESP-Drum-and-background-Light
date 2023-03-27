@@ -16,3 +16,11 @@ Develop for swith relay via crontab with cURL.
 * Switch off
 
 ` curl http://SONOFF_IP/off`
+
+* System information
+
+` curl http://SONOFF_IP/dev`
+
+* OTA update
+
+` curl http://SONOFF_IP/firmware`
