@@ -61,8 +61,8 @@ String SendHTML(float TempCstat, float Humiditystat){
 
 void handleRoot() {
 
-  Temperature = dht.readTemperature() - TempCoeff; // Gets the values of the temperature
-  Humidity = dht.readHumidity() + HumCoeff; // Gets the values of the humidity
+  Temperature = dht.readTemperature() - (dht.readTemperature()*0.1); // Gets the values of the temperature
+  Humidity = dht.readHumidity() + (dht.readHumidity()*0.15); // Gets the values of the humidity
   httpServer.send(200, "text/html", SendHTML(Temperature,Humidity));
 }
 
@@ -71,12 +71,12 @@ void handleNotFound(){
 }
 
 void handleTemp(){
-  Temperature = dht.readTemperature() - TempCoeff;
+  Temperature = dht.readTemperature() - (dht.readTemperature()*0.1);
   httpServer.send(404, "text/plain", String(Temperature));
 }
 
 void handleHum(){
-  Humidity = dht.readHumidity() + HumCoeff;
+  Humidity = dht.readHumidity() + (dht.readHumidity()*0.15);
   httpServer.send(404, "text/plain", String(Humidity));
 }
 
@@ -97,14 +97,13 @@ void otaUpdater() {
 }
 
 void setup() {
-  delay(50);
   dht.begin();
-//   WiFi.begin(ssid, password);
-//   WiFi.config(ip, gateway, subnet);
+  delay(30);
+  WiFi.begin(ssid, password);
+  WiFi.config(ip, gateway, subnet);
 
-//   while (WiFi.status() != WL_CONNECTED)
-//     delay(500);
-  wifiManager.autoConnect("ESP Connect");
+  while (WiFi.status() != WL_CONNECTED)
+    delay(500);
 
   otaUpdater();
 }
