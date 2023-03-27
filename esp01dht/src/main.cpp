@@ -99,11 +99,12 @@ void otaUpdater() {
 void setup() {
   delay(50);
   dht.begin();
-  WiFi.begin(ssid, password);
-  WiFi.config(ip, gateway, subnet);
+//   WiFi.begin(ssid, password);
+//   WiFi.config(ip, gateway, subnet);
 
-  while (WiFi.status() != WL_CONNECTED)
-    delay(500);
+//   while (WiFi.status() != WL_CONNECTED)
+//     delay(500);
+  wifiManager.autoConnect("ESP Connect");
 
   otaUpdater();
 }
