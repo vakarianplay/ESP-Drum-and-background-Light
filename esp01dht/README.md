@@ -28,3 +28,6 @@ Lightweight firmware with minimalistic web server.
 ---------------------------
 
 ![Снимок экрана 2023-03-27 111134](https://user-images.githubusercontent.com/20814332/227882581-3e58249d-9c7f-4e7b-a71b-2b8caa7af450.jpg)
+
+![image](https://user-images.githubusercontent.com/20814332/228493398-9a1697dc-ec36-4ec4-9feb-c7544e3d41b2.png)
+
