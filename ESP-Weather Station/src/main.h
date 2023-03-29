@@ -21,13 +21,9 @@ GyverNTP ntp(3);
 HTTPUpdateServer httpUpdater;
 WebServer httpServer(80);
 
-
-
 const char* host = "narodmon.ru";
 String narodLine;
 String narodValue;
-
-
 
 struct wttrStruct{
   String wttrinWeather;
@@ -37,7 +33,13 @@ struct wttrStruct{
   String wttrinWind;
 };
 
+struct dhtStruct{
+  String dhtTemp;
+  String dhtHum;
+};
+
 wttrStruct wttrVar;
+dhtStruct dhtVar;
 
 bool readyForWeatherUpdate = false;
 String lastUpdate = "--";
@@ -50,12 +52,13 @@ void drawCurrentWeather(OLEDDisplay *display, OLEDDisplayUiState* state, int16_t
 void drawDetailsWeather(OLEDDisplay *display, OLEDDisplayUiState* state, int16_t x, int16_t y);
 // void drawForecast(OLEDDisplay *display, OLEDDisplayUiState* state, int16_t x, int16_t y);
 void drawNarodMon(OLEDDisplay *display, OLEDDisplayUiState* state, int16_t x, int16_t y);
+void drawDht(OLEDDisplay *display, OLEDDisplayUiState* state, int16_t x, int16_t y);
 // void drawForecastDetails(OLEDDisplay *display, int x, int y, int dayIndex);
 void drawHeaderOverlay(OLEDDisplay *display, OLEDDisplayUiState* state);
 void setReadyForWeatherUpdate();
 
-FrameCallback frames[] = { drawDateTime, drawCurrentWeather, drawDetailsWeather, drawNarodMon };
-int numberOfFrames = 4;
+FrameCallback frames[] = { drawDateTime, drawCurrentWeather, drawDetailsWeather, drawNarodMon, drawDht };
+int numberOfFrames = 5;
 
 
 OverlayCallback overlays[] = { drawHeaderOverlay };

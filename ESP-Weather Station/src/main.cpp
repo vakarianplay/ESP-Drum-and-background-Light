@@ -55,6 +55,23 @@ void wttrGet() {
     http.end();
 }
 
+void dhtGet() {
+  String wttrGet;
+  HTTPClient http;
+    http.begin("http://192.168.1.253/temp");
+    int httpCode = http.GET();
+    if (httpCode > 0) {
+      dhtVar.dhtTemp = http.getString();
+    }
+    http.end();
+    http.begin("http://192.168.1.253/hum");
+    httpCode = http.GET();
+    if (httpCode > 0) {
+      dhtVar.dhtHum = http.getString();
+    }
+    http.end();
+}
+
 void narodJsonGet() {
 
   WiFiClient client;
@@ -83,7 +100,6 @@ void narodData() {
   narodJsonGet();
   StaticJsonDocument<2000> jsonBuffer;
   DeserializationError error = deserializeJson(jsonBuffer, narodLine);
-  // Проверьте, удастся ли выполнить синтаксический анализ.
   if (error) {
     Serial.print(F("deserializeJson() failed: "));
     Serial.println(error.f_str());
@@ -102,13 +118,16 @@ void narodData() {
 
 void updateData(OLEDDisplay *display) {
   drawProgress(display, 10, "Updating time...");
-  delay(500);
+  delay(300);
 
   drawProgress(display, 30, "Updating NarodMon");
   narodData();
 
-  drawProgress(display, 60, "Updating WttrIn");
+  drawProgress(display, 50, "Updating WttrIn");
   wttrGet();
+
+  drawProgress(display, 80, "Updating DHT");
+  dhtGet();
 
   lastUpdate = ntp.timeString();
   readyForWeatherUpdate = false;
@@ -145,6 +164,18 @@ void drawCurrentWeather(OLEDDisplay *display, OLEDDisplayUiState* state, int16_t
   display->setFont(ArialMT_Plain_16);
   display->drawString(60 + x, 20 + y, wttrVar.wttrinWeather);
   int tempWidth = display->getStringWidth(wttrVar.wttrinWeather);
+}
+
+void drawDht(OLEDDisplay *display, OLEDDisplayUiState* state, int16_t x, int16_t y) {
+  String displayDht = dhtVar.dhtTemp + "°C " + dhtVar.dhtHum + "%";
+
+  display->setFont(Roboto_12);
+  display->setTextAlignment(TEXT_ALIGN_CENTER);
+  display->drawString(60 + x, 5 + y, "DHT11");
+
+  display->setFont(ArialMT_Plain_16);
+  display->drawString(65 + x, 22 + y, displayDht);
+  int tempWidth = display->getStringWidth(displayDht);
 }
 
 void drawDetailsWeather(OLEDDisplay *display, OLEDDisplayUiState* state, int16_t x, int16_t y) {
@@ -212,20 +243,20 @@ void setup() {
   display.clear();
   display.display();
 
+  //display.flipScreenVertically();
+  // display.setFont(ArialMT_Plain_10);
   display.setTextAlignment(TEXT_ALIGN_CENTER);
   display.setContrast(255);
 
   display.setFont(Roboto_12);
   display.drawString(60, 12, "Config WiFi:");
-  display.drawString(60, 26, "SSID: EspWeatherAP");
-  display.drawString(60, 40, "URL: 192.168.4.1");
+  display.drawString(60, 26, "EspWeatherAP");
   display.display();
   wifiManager.autoConnect("EspWeatherAP");
   // WiFi.begin(ssid, password);
 
   int counter = 0;
-//   while (WiFi.status() != WL_CONNECTED) {
-  while (counter <= 5) {
+  while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
     display.clear();
