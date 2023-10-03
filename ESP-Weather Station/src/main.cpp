@@ -81,7 +81,7 @@ void narodJsonGet() {
     return;
   }
 
-  client.println("GET /api/sensorsOnDevice?id=7689&uuid=4878a0c647b31c5074ae45586fefd018&api_key={narodmon_API_key}&lang=en HTTP/1.1");
+  client.println("GET /api/sensorsOnDevice?id=7689&uuid={place_your_uid}&api_key={narodmon_API_key}&lang=en HTTP/1.1");
   client.println("Host: narodmon.ru");
   client.println("Connection: close");
   client.println();
