@@ -113,6 +113,10 @@ void narodData() {
 
   float value = jsonBuffer["sensors"][0]["value"];
   Serial.print(value);
+  narodRadValue = String(value);
+
+  float value = jsonBuffer["sensors"][1]["value"];
+  Serial.print(value);
   narodValue = String(value);
 }
 
@@ -154,6 +158,14 @@ void drawNarodMon(OLEDDisplay *display, OLEDDisplayUiState* state, int16_t x, in
   display->drawString(64 + x, 0 + y, "NarodMon");
   display->setFont(ArialMT_Plain_24);
   display->drawString(64 + x, 14 + y, narodValue + "°C");
+}
+
+void drawNarodMonRad(OLEDDisplay *display, OLEDDisplayUiState* state, int16_t x, int16_t y) {
+  display->setTextAlignment(TEXT_ALIGN_CENTER);
+  display->setFont(Roboto_12);
+  display->drawString(64 + x, 0 + y, "Radiation");
+  display->setFont(ArialMT_Plain_24);
+  display->drawString(64 + x, 14 + y, narodRadValue + "μR/H");
 }
 
 void drawCurrentWeather(OLEDDisplay *display, OLEDDisplayUiState* state, int16_t x, int16_t y) {
