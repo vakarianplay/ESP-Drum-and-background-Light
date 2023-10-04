@@ -52,13 +52,14 @@ void drawCurrentWeather(OLEDDisplay *display, OLEDDisplayUiState* state, int16_t
 void drawDetailsWeather(OLEDDisplay *display, OLEDDisplayUiState* state, int16_t x, int16_t y);
 // void drawForecast(OLEDDisplay *display, OLEDDisplayUiState* state, int16_t x, int16_t y);
 void drawNarodMon(OLEDDisplay *display, OLEDDisplayUiState* state, int16_t x, int16_t y);
+void drawNarodMonRad(OLEDDisplay *display, OLEDDisplayUiState* state, int16_t x, int16_t y);
 void drawDht(OLEDDisplay *display, OLEDDisplayUiState* state, int16_t x, int16_t y);
 // void drawForecastDetails(OLEDDisplay *display, int x, int y, int dayIndex);
 void drawHeaderOverlay(OLEDDisplay *display, OLEDDisplayUiState* state);
 void setReadyForWeatherUpdate();
 
-FrameCallback frames[] = { drawDateTime, drawCurrentWeather, drawDetailsWeather, drawNarodMon, drawDht };
-int numberOfFrames = 5;
+FrameCallback frames[] = { drawDateTime, drawCurrentWeather, drawDetailsWeather, drawNarodMon, drawNarodMonRad drawDht };
+int numberOfFrames = 6;
 
 
 OverlayCallback overlays[] = { drawHeaderOverlay };
