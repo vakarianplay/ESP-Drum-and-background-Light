@@ -58,7 +58,7 @@ void drawDht(OLEDDisplay *display, OLEDDisplayUiState* state, int16_t x, int16_t
 void drawHeaderOverlay(OLEDDisplay *display, OLEDDisplayUiState* state);
 void setReadyForWeatherUpdate();
 
-FrameCallback frames[] = { drawDateTime, drawCurrentWeather, drawDetailsWeather, drawNarodMon, drawNarodMonRad drawDht };
+FrameCallback frames[] = { drawDateTime, drawCurrentWeather, drawDetailsWeather, drawNarodMon, drawNarodMonRad, drawDht };
 int numberOfFrames = 6;
 
 
