@@ -6,8 +6,8 @@
 #include <WiFiManager.h>
 #include "motordriver.h"
 
-#define BOT_TOKEN "1933129297:AAFtgv9LaOgDbT6fUKnIbd1rBsVCrIA_k2o"
-#define CHAT_ID "1401259988"
+#define BOT_TOKEN "place_bot_token_here"
+#define CHAT_ID "place_chat_id_here"
 
 FastBot bot(BOT_TOKEN);
 WiFiManager wifiManager;
