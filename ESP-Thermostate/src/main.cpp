@@ -4,8 +4,8 @@
 #include <AsyncElegantOTA.h>
 #include "index.h"
 
-const char* ssid = "MUTINY";
-const char* password = "816planet";
+const char* ssid = "";
+const char* password = "";
 const int ledPin = 15;
 bool isLedOn = false;
 
