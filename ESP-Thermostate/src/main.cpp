@@ -14,7 +14,6 @@ ESP8266HTTPUpdateServer httpUpdater;
 ESP8266WebServer server(80);
 
 
-
 void handleRoot() 
 {
  String s = webpage;
