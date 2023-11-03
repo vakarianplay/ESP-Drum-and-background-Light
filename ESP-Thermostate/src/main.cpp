@@ -1,70 +1,86 @@
+
 #include <ESP8266WiFi.h>
-#include <ESPAsyncTCP.h>
-#include <ESPAsyncWebServer.h>
-#include <AsyncElegantOTA.h>
+#include <WiFiClient.h>
+#include <ESP8266WebServer.h>
+#include <ESP8266HTTPUpdateServer.h>
 #include "index.h"
 
-const char* ssid = "";
-const char* password = "";
-const int ledPin = 15;
-bool isLedOn = false;
+const byte relay1 = 15;
+const byte relay2 = 13;
+const char* ssid = "ASS WE CAN";
+const char* password = "13371488";
 
-AsyncWebServer server(80);
+ESP8266HTTPUpdateServer httpUpdater;
+ESP8266WebServer server(80);
 
-void ledProcessor(AsyncWebServerRequest *request) {
-  isLedOn = !isLedOn;
-  String stateText = "";
-  if (isLedOn) {
-    digitalWrite(ledPin, HIGH);
-    request->send(200, "text/plain", "Turn off");
-  } else {
-    digitalWrite(ledPin, LOW);
-    request->send(200, "text/plain", "Turn on");
-  }
-}
-void handleReadSensor(AsyncWebServerRequest *request) {
-  int value = analogRead(A0);
-  String response = String(value);
-  request->send(200, "text/plain", response);
+
+
+void handleRoot() 
+{
+ String s = webpage;
+ server.send(200, "text/html", s);
 }
 
-void jsonProcessor(AsyncWebServerRequest *request) {
+void sensorReadTemp() 
+{
+ String sensor_value = String(analogRead(A0));
+ server.send(200, "text/plane", sensor_value);
+}
+
+void relayController(byte relayNum) 
+{
+  byte state = digitalRead(relayNum);
+  digitalWrite(relayNum, !state);
+ 
+  server.send(200, "text/plane", String(!state));
+}
+
+void relayStatus(byte relayNum) {
+    server.send(200, "text/plane", String(digitalRead(relayNum)));
+}
+
+void jsonProcessor() {
   String json = "{";
-    json += "\"Relay_1\": " + String(digitalRead(15)) + ",";
+    json += "\"Relay_1\": " + String(digitalRead(relay1)) + ",";
+    json += "\"Relay_2\": " + String(digitalRead(relay2)) + ",";
     json += "\"Sensor\": " + String(analogRead(A0));
     json += "}";
-    request->send(200, "application/json", json);
+    server.send(200, "application/json", json);
 }
 
-void setup() {
-  pinMode(ledPin, OUTPUT);
-  digitalWrite(ledPin, LOW);
-
+void setup(void)
+{
   Serial.begin(9600);
-
-  // Подключение к Wi-Fi
   WiFi.begin(ssid, password);
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(1000);
+  Serial.println("");
+  pinMode(relay1,OUTPUT); 
+  pinMode(relay2,OUTPUT); 
+  
+  while (WiFi.status() != WL_CONNECTED)
+  {
+    Serial.print("Connecting...");
   }
-
-  server.on("/toggleLed", HTTP_GET, ledProcessor);
-  server.on("/readSensor", HTTP_GET, handleReadSensor);
+  Serial.println("");
+  Serial.print("Connected to ");
+  Serial.println(ssid);
+  Serial.print("IP address: ");
+  Serial.println(WiFi.localIP());
+ 
+  server.on("/", handleRoot);
+  server.on("/toggleRelay1", [&]() {relayController(relay1);});
+  server.on("/toggleRelay2", [&]() {relayController(relay2);});
+  server.on("/st1", [&]() {relayStatus(relay1);});
+  server.on("/st2", [&]() {relayStatus(relay2);});
+  server.on("/readTemp", sensorReadTemp);
   server.on("/data", HTTP_GET, jsonProcessor);
 
-  // Настройка обработчика для главной страницы
-  server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
-    String buttonText = isLedOn ? "Turn off" : "Turn on";
-    String webpage = html;
-    webpage.replace("%btnTxt%", buttonText);
+  httpUpdater.setup(&server, "/firmware");
 
-    request->send(200, "text/html", webpage);
-  });
 
-  AsyncElegantOTA.begin(&server);
   server.begin();
 }
 
-void loop() {
-  // Дополнительные задачи, если есть
+void loop(void)
+{
+  server.handleClient();
 }
