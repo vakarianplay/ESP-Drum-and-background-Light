@@ -1,6 +1,62 @@
 <!DOCTYPE html>
 <html>
 <style type="text/css">
+:root {
+  --checkbox-slider-offset: 10000px;
+  --checkbox-slider-size: 30px;
+  --checkbox-slider-toggle: calc(var(--checkbox-slider-size) * 0.8);
+  font-family: Helvetica;
+}
+  .checkbox-slider {
+    font-size: 25pt;
+  }
+
+@supports (--a: 1) { 
+  input[type="checkbox"].checkbox-slider,
+  .checkbox-slider input[type="checkbox"]
+  {
+    position: relative;
+    left: var(--checkbox-slider-offset);
+    height: var(--checkbox-slider-size);
+    width: var(--checkbox-slider-size);
+
+    &::before, &::after {
+      position: absolute;
+      content: '';
+      display: block;
+      cursor: pointer;
+      left: calc(var(--checkbox-slider-offset) * -1);
+    }
+
+    &::before {
+      border-radius: var(--checkbox-slider-size);
+      width: calc(var(--checkbox-slider-size) * 2);
+      height: var(--checkbox-slider-size);
+      background: #aaa;
+      transition: background-color 200ms;
+    }
+
+    &:checked::before {
+      background: #3f729b;
+    }
+
+    &::after {
+      width: var(--checkbox-slider-toggle);
+      height: var(--checkbox-slider-toggle);
+      background: #fff;
+      top: 50%;
+      transform: translateY(-50%) translateX(13%);
+      border-radius: var(--checkbox-slider-toggle);
+      transition: box-shadow 100ms ease-in-out, transform 100ms ease-in-out;
+    }
+
+    &:checked::after {
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+      transform: translateY(-50%) translateX(133%);
+    }
+  }
+ 
+}
 .button {
   background-color: #4CAF50; /* Green */
   border: none;
@@ -12,14 +68,15 @@
   font-size: 16px;
 }
 </style>
-<body style="background-color: #f9e79f ">
+</style>
+<body>
 <center>
 <div>
 <h1>ESP THERMOSTATE</h1>
 <!--   <button class="button" id="state1" onclick="toggle1()">LED ON</button> -->
 <!--   <button class="button" id="state2" onclick="toggle2()">LED OFF</button><BR> -->
-  <p><span>RELAY 1</span><input type="checkbox" onclick="toggle1()" id="fluency" unchecked>
-  <p><span>RELAY 2</span><input type="checkbox" onclick="toggle2()" id="fluency" unchecked>
+  <p class="checkbox-slider">RELAY 1 <input type="checkbox" onclick="toggle1()" id="fluency" unchecked>
+  <p class="checkbox-slider">RELAY 2 <input type="checkbox" onclick="toggle2()" id="fluency" unchecked>
 </div>
  <br>
 <div><h2>
