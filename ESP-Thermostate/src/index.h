@@ -4,6 +4,62 @@ const char webpage[] PROGMEM = R"=====(
 <!DOCTYPE html>
 <html>
 <style type="text/css">
+:root {
+  --checkbox-slider-offset: 10000px;
+  --checkbox-slider-size: 30px;
+  --checkbox-slider-toggle: calc(var(--checkbox-slider-size) * 0.8);
+  font-family: Helvetica;
+}
+  .checkbox-slider {
+    font-size: 25pt;
+  }
+
+@supports (--a: 1) { 
+  input[type="checkbox"].checkbox-slider,
+  .checkbox-slider input[type="checkbox"]
+  {
+    position: relative;
+    left: var(--checkbox-slider-offset);
+    height: var(--checkbox-slider-size);
+    width: var(--checkbox-slider-size);
+
+    &::before, &::after {
+      position: absolute;
+      content: '';
+      display: block;
+      cursor: pointer;
+      left: calc(var(--checkbox-slider-offset) * -1);
+    }
+
+    &::before {
+      border-radius: var(--checkbox-slider-size);
+      width: calc(var(--checkbox-slider-size) * 2);
+      height: var(--checkbox-slider-size);
+      background: #aaa;
+      transition: background-color 200ms;
+    }
+
+    &:checked::before {
+      background: #3f729b;
+    }
+
+    &::after {
+      width: var(--checkbox-slider-toggle);
+      height: var(--checkbox-slider-toggle);
+      background: #fff;
+      top: 50%;
+      transform: translateY(-50%) translateX(13%);
+      border-radius: var(--checkbox-slider-toggle);
+      transition: box-shadow 100ms ease-in-out, transform 100ms ease-in-out;
+    }
+
+    &:checked::after {
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+      transform: translateY(-50%) translateX(133%);
+    }
+  }
+ 
+}
 .button {
   background-color: #4CAF50; /* Green */
   border: none;
@@ -15,12 +71,13 @@ const char webpage[] PROGMEM = R"=====(
   font-size: 16px;
 }
 </style>
-<body style="background-color: #f9e79f ">
+</style>
+<body>
 <center>
 <div>
 <h1>ESP THERMOSTATE</h1>
-  <button class="button" id="state1" onclick="toggle1()">LED ON</button>
-  <button class="button" id="state2" onclick="toggle2()">LED OFF</button><BR>
+  <p class="checkbox-slider">RELAY 1 <input type="checkbox" onclick="toggle1()" id="state1" unchecked>
+  <p class="checkbox-slider">RELAY 2 <input type="checkbox" onclick="toggle2()" id="state2" unchecked>
 </div>
  <br>
 <div><h2>
@@ -36,11 +93,14 @@ function toggle1()
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
       if (this.responseText == "0") {
-      document.getElementById("state1").innerHTML = "RELAY1 OFF";
-      } else
-        document.getElementById("state1").innerHTML = "RELAY1 ON";
+        document.getElementById("state1").checked = false;
+      // document.getElementById("state1").innerHTML = "RELAY1 OFF";
+      } else 
+        document.getElementById("state1").checked = true;
+        // document.getElementById("state1").innerHTML = "RELAY1 ON";
     }
   };
+  console.log('Toggle func 1');
   xhttp.open("GET", "toggleRelay1", true);
   xhttp.send();
 }
@@ -51,9 +111,11 @@ function toggle2()
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
       if (this.responseText == "0") {
-      document.getElementById("state2").innerHTML = "RELAY2 OFF";
+        document.getElementById("state2").checked = false;
+      // document.getElementById("state2").innerHTML = "RELAY2 OFF";
       } else
-        document.getElementById("state2").innerHTML = "RELAY2 ON";
+        document.getElementById("state2").checked = true;
+        // document.getElementById("state2").innerHTML = "RELAY2 ON";
     }
   };
   xhttp.open("GET", "toggleRelay2", true);
@@ -66,11 +128,14 @@ function getRelay1()
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
       if (this.responseText == "0") {
-      document.getElementById("state1").innerHTML = "RELAY1 OFF";
-      } else
-        document.getElementById("state1").innerHTML = "RELAY1 ON";
+        document.getElementById("state1").checked = false;
+      // document.getElementById("state1").innerHTML = "RELAY1 OFF";
+      } else 
+        document.getElementById("state1").checked = true;
+        // document.getElementById("state1").innerHTML = "RELAY1 ON";
     }
   };
+  console.log('UPD func 1');
   xhttp.open("GET", "st1", true);
   xhttp.send();
 }
@@ -81,9 +146,11 @@ function getRelay2()
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
       if (this.responseText == "0") {
-      document.getElementById("state2").innerHTML = "RELAY2 OFF";
+        document.getElementById("state2").checked = false;
+      // document.getElementById("state2").innerHTML = "RELAY2 OFF";
       } else
-        document.getElementById("state2").innerHTML = "RELAY2 ON";
+        document.getElementById("state2").checked = true;
+        // document.getElementById("state2").innerHTML = "RELAY2 ON";
     }
   };
   xhttp.open("GET", "st2", true);
