@@ -1,4 +1,4 @@
 ## ESP Thermostate
 
-inital readme
+inital  readme
 
