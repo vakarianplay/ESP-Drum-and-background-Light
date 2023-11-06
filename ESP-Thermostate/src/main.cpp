@@ -42,8 +42,6 @@ void sensorRead(uint8_t id)
   if (id == SENSORS::HUM) {
     server.send(200, "text/plane", regulator.getHumString());
   }
- // String sensor_value = String(analogRead(A0));
-
 }
 
 void relayController(uint8_t relayNum)
@@ -63,11 +61,15 @@ void uptime() {
 }
 
 void jsonProcessor() {
-  String json = "{";
+  String json = "[{";
     json += "\"Relay_1\": " + String(digitalRead(relay1)) + ",";
     json += "\"Relay_2\": " + String(digitalRead(relay2)) + ",";
-    json += "\"Sensor\": " + String(analogRead(A0));
-    json += "}";
+    json += "\"Regulator state\": " + String(regulator.isRegulator()) + ",";
+    json += "\"Sensor Temp\": " + regulator.getTempString() + ",";
+    json += "\"Sensor Hum\": " + regulator.getHumString();
+    json += "}, {";
+    json += "\"Hysteresis\": " + regulator.getHysteresis();
+    json += "}]";
     server.send(200, "application/json", json);
 }
 

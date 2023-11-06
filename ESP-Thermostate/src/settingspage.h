@@ -61,10 +61,13 @@ const char settingspage[] PROGMEM = R"=====(
   	<div>
   		<h1><span>&#9881;</span> Settings</h1><br>
       <form name="test" method="post" action="input1.php">
-   <p><b>Set temp:</b><br>
+   <p><b>Set temperature:</b><br>
     <input type="text">
    </p>
-   <p><b>Set hum:</b><br>
+   <p><b>Set humidity:</b><br>
+    <input type="text">
+   </p>
+   <p><b>Set hysteresis:</b><br>
     <input type="text">
    </p>
       <button class="button">💾 Save</button>
