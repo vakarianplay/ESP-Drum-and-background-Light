@@ -8,7 +8,6 @@ const char webpage[] PROGMEM = R"=====(
   <title>ESP Thermostate</title>
   <style type="text/css">
 
-
   :root {
     --checkbox-slider-offset: 10000px;
     --checkbox-slider-size: 30px;
@@ -99,6 +98,11 @@ const char webpage[] PROGMEM = R"=====(
         left: 50%;
         transform: translate(-50%, -50%);
       }
+
+	input.regulator {
+            width: 20px;
+            height: 20px;
+        }
   </style>
   </head>
   <body>
@@ -106,8 +110,9 @@ const char webpage[] PROGMEM = R"=====(
   <div class="centralblock">
   	<div>
   		<h1>ESP THERMOSTATE</h1><br>
-  		<p class="checkbox-slider">RELAY 1 <input type="checkbox" onclick="toggle1()" id="fluency" unchecked>
-  		<p class="checkbox-slider">RELAY 2 <input type="checkbox" onclick="toggle2()" id="fluency" unchecked>
+  		<p class="checkbox-slider">RELAY 1 <input type="checkbox" onclick="toggle1()" id="state1" unchecked>
+  		<p class="checkbox-slider">RELAY 2 <input type="checkbox" onclick="toggle2()" id="state2" unchecked>
+		<p style="font-size: 20px;">Regulator <input class="regulator" type="checkbox" onclick="toggleAuto()" id="stateAuto" unchecked>
   	</div>
   	 <br>
   	<div>
@@ -130,10 +135,8 @@ const char webpage[] PROGMEM = R"=====(
       if (this.readyState == 4 && this.status == 200) {
         if (this.responseText == "0") {
           document.getElementById("state1").checked = false;
-        // document.getElementById("state1").innerHTML = "RELAY1 OFF";
         } else
           document.getElementById("state1").checked = true;
-          // document.getElementById("state1").innerHTML = "RELAY1 ON";
       }
     };
     console.log('Toggle func 1');
@@ -148,13 +151,42 @@ const char webpage[] PROGMEM = R"=====(
       if (this.readyState == 4 && this.status == 200) {
         if (this.responseText == "0") {
           document.getElementById("state2").checked = false;
-        // document.getElementById("state2").innerHTML = "RELAY2 OFF";
         } else
           document.getElementById("state2").checked = true;
-          // document.getElementById("state2").innerHTML = "RELAY2 ON";
       }
     };
     xhttp.open("GET", "toggleRelay2", true);
+    xhttp.send();
+  }
+
+  function toggleAuto()
+  {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        if (this.responseText == "0") {
+          document.getElementById("stateAuto").checked = false;
+        } else
+          document.getElementById("stateAuto").checked = true;
+      }
+    };
+    xhttp.open("GET", "toggleAuto", true);
+    xhttp.send();
+  }
+
+  function getAuto()
+  {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        console.log(this.responseText);
+        if (this.responseText == "0") {
+          document.getElementById("stateAuto").checked = false;
+        } else
+          document.getElementById("stateAuto").checked = true;
+      }
+    };
+    xhttp.open("GET", "stAuto", true);
     xhttp.send();
   }
 
@@ -165,10 +197,8 @@ const char webpage[] PROGMEM = R"=====(
       if (this.readyState == 4 && this.status == 200) {
         if (this.responseText == "0") {
           document.getElementById("state1").checked = false;
-        // document.getElementById("state1").innerHTML = "RELAY1 OFF";
         } else
           document.getElementById("state1").checked = true;
-          // document.getElementById("state1").innerHTML = "RELAY1 ON";
       }
     };
     console.log('UPD func 1');
@@ -183,10 +213,8 @@ const char webpage[] PROGMEM = R"=====(
       if (this.readyState == 4 && this.status == 200) {
         if (this.responseText == "0") {
           document.getElementById("state2").checked = false;
-        // document.getElementById("state2").innerHTML = "RELAY2 OFF";
         } else
           document.getElementById("state2").checked = true;
-          // document.getElementById("state2").innerHTML = "RELAY2 ON";
       }
     };
     xhttp.open("GET", "st2", true);
@@ -233,6 +261,7 @@ const char webpage[] PROGMEM = R"=====(
     getUptime();
     getRelay1();
     getRelay2();
+    getAuto();
   }, 2000);
 
   document.addEventListener("DOMContentLoaded", function() {
@@ -241,6 +270,7 @@ const char webpage[] PROGMEM = R"=====(
     getUptime();
     getRelay1();
     getRelay2();
+    getAuto();
   });
 
 
