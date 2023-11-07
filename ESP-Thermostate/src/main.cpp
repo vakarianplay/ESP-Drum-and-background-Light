@@ -10,7 +10,8 @@
 
 enum SENSORS {TEMP, HUM};
 
-
+unsigned long previousMillis = 0;
+const unsigned long interval = 500;
 const uint8_t relay1 = 15;
 const uint8_t relay2 = 13;
 const char* ssid = "MUTINY";
@@ -52,8 +53,17 @@ void relayController(uint8_t relayNum)
   server.send(200, "text/plane", String(!state));
 }
 
+void regulatorController() {
+  regulator.toggleRegulator();
+  server.send(200, "text/plane", String(regulator.isRegulator()));
+}
+
 void relayStatus(uint8_t relayNum) {
     server.send(200, "text/plane", String(digitalRead(relayNum)));
+}
+
+void regulatorStatus() {
+    server.send(200, "text/plane", String(regulator.isRegulator()));
 }
 
 void uptime() {
@@ -77,9 +87,7 @@ void setup(void)
 {
   Serial.begin(9600);
   WiFi.begin(ssid, password);
-  Serial.println("");
-  // pinMode(relay1,OUTPUT);
-  // pinMode(relay2,OUTPUT);
+  regulator.toggleRegulator();
 
   while (WiFi.status() != WL_CONNECTED)
   {
@@ -95,8 +103,10 @@ void setup(void)
   server.on("/handleSettings", handleSettings);
   server.on("/toggleRelay1", [&]() {relayController(relay1);});
   server.on("/toggleRelay2", [&]() {relayController(relay2);});
+  server.on("/toggleAuto", regulatorController);
   server.on("/st1", [&]() {relayStatus(relay1);});
   server.on("/st2", [&]() {relayStatus(relay2);});
+  server.on("/stAuto", regulatorStatus);
   server.on("/readTemp", [&]() {sensorRead(SENSORS::TEMP);});
   server.on("/readHum", [&]() {sensorRead(SENSORS::HUM);});
   server.on("/readUptime", uptime);
@@ -111,4 +121,10 @@ void setup(void)
 void loop(void)
 {
   server.handleClient();
+
+  unsigned long currentMillis = millis();
+  if (currentMillis - previousMillis >= interval) {
+    previousMillis = currentMillis;
+    regulator.tick();
+  }
 }

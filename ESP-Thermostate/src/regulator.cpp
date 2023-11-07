@@ -6,6 +6,18 @@ Regulator::Regulator(uint8_t aPin, uint8_t bPin)
     relayH = bPin;
     pinMode(relayT, OUTPUT);
     pinMode(relayH, OUTPUT);
+
+    tempSet = 30.10;
+    humSet = 10.30;
+}
+
+void Regulator::tick() {
+  tempValue = analogRead(A0);
+  humValue = analogRead(A0) * 0.4;
+  if (regulatorState){
+    tempRelay();
+    humRelay();
+  }
 }
 
 bool Regulator::isRegulator()
@@ -20,6 +32,26 @@ void Regulator::setValues(float tempval_, float humval_, float hystval_)
   hysteresis = hystval_;
 }
 
+void Regulator::toggleRegulator()
+{
+  regulatorState = !regulatorState;
+}
+
+void Regulator::tempRelay(){
+  if (tempValue < tempSet) {
+    digitalWrite(relayT, 1);
+  } else {
+    digitalWrite(relayT, 0);
+  }
+}
+
+void Regulator::humRelay(){
+  if (humValue < humSet) {
+    digitalWrite(relayH, 1);
+  } else {
+    digitalWrite(relayH, 0);
+  }
+}
 
 String Regulator::getTempString()
 {

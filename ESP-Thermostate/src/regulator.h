@@ -12,10 +12,15 @@ public:
     String getHysteresis();
 
     void setValues(float tempval_, float humval_, float hystval_);
+    void toggleRegulator();
+    void tick();
 
     bool isRegulator();
 
 private:
+
+    void tempRelay();
+    void humRelay();
 
     bool regulatorState = false;
 
