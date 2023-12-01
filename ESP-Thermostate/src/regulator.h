@@ -1,4 +1,6 @@
 #include "Arduino.h"
+#include "Wire.h"
+#include "SHT2x.h"
 
 class Regulator
 {
@@ -18,6 +20,8 @@ public:
     bool isRegulator();
 
 private:
+
+    SHT2x sht;
 
     void tempRelay();
     void humRelay();

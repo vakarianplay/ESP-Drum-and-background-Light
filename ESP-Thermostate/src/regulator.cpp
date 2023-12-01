@@ -4,16 +4,18 @@ Regulator::Regulator(uint8_t aPin, uint8_t bPin)
 {
     relayT = aPin;
     relayH = bPin;
+    sht.begin(4,5);
     pinMode(relayT, OUTPUT);
     pinMode(relayH, OUTPUT);
 
-    tempSet = 30.10;
-    humSet = 10.30;
+    tempSet = 25.10;
+    humSet = 35.80;
 }
 
 void Regulator::tick() {
-  tempValue = analogRead(A0);
-  humValue = analogRead(A0) * 0.4;
+  sht.read();
+  tempValue = sht.getTemperature();
+  humValue = sht.getHumidity();
   if (regulatorState){
     tempRelay();
     humRelay();
@@ -55,13 +57,15 @@ void Regulator::humRelay(){
 
 String Regulator::getTempString()
 {
-  String sensorValue = String(analogRead(A0));
+  // sht.read();
+  String sensorValue = String(sht.getTemperature());
   return sensorValue;
 }
 
 String Regulator::getHumString()
 {
-  String sensorValue = String(analogRead(A0) * 0.4);
+  // sht.read();
+  String sensorValue = String(sht.getHumidity());
   return sensorValue;
 }
 
