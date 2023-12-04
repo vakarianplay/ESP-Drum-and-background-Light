@@ -31,9 +31,19 @@ void handleRoot()
 void handleSettings()
 {
  String s = settingspage;
+ s.replace("{temp_settings}", regulator.getTempSetString());
+ s.replace("{hum_settings}", regulator.getHumSetString());
+ s.replace("{hyst_settings}", regulator.getHysteresis());
  server.send(200, "text/html", s);
 }
 
+void handleForm()
+{
+  float tempval_ = 0.0;
+  float humval_ = 0.0;
+  float hystval_ = 0.0;
+  regulator.setValues(float tempval_, float humval_, float hystval_)
+}
 
 void sensorRead(uint8_t id)
 {
@@ -111,6 +121,7 @@ void setup(void)
   server.on("/readHum", [&]() {sensorRead(SENSORS::HUM);});
   server.on("/readUptime", uptime);
   server.on("/data", HTTP_GET, jsonProcessor);
+  server.on("/form", handleForm);
 
   httpUpdater.setup(&server, "/firmware");
 
