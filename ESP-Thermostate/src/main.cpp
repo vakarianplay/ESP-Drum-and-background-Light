@@ -39,10 +39,10 @@ void handleSettings()
 
 void handleForm()
 {
-  float tempval_ = 0.0;
-  float humval_ = 0.0;
-  float hystval_ = 0.0;
-  regulator.setValues(float tempval_, float humval_, float hystval_)
+  float temp_ = 0.0;
+  float hum_ = 0.0;
+  float hyst_ = 0.0;
+  regulator.setValues(temp_, hum_, hyst_);
 }
 
 void sensorRead(uint8_t id)
