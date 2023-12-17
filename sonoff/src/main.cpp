@@ -24,7 +24,7 @@ void handleRoot() {
 }
 
 void handleSt() {
-  httpServer.send(302, "text/plain", String(digitalRead(12)));
+  httpServer.send(200, "text/plain", String(digitalRead(12)));
 }
 
 void handleDev() {
