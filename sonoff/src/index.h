@@ -109,8 +109,8 @@ const char webpage[] PROGMEM = R"=====(
   <center>
   <div class="centralblock">
   	<div>
-  		<h1>X-MAS LIGHT</h1><br>
-  		<p class="checkbox-slider"><input type="checkbox" onclick="toggle1()" id="state1" unchecked>
+  		<h1>SONOFF</h1><h1>RELAY</h1><br>
+  		<p class="checkbox-slider">Switch <input type="checkbox" onclick="toggle1()" id="state1" unchecked>
   	</div>
   	 <br>
   </div>
