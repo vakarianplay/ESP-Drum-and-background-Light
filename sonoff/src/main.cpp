@@ -28,8 +28,26 @@ void handleSt() {
 }
 
 void handleDev() {
-  String root = "SSID: " + WiFi.SSID() + " | MAC: " + WiFi.macAddress() + " | IP: " + WiFi.localIP().toString() + "\n" + uptime_formatter::getUptime();
-  httpServer.send(302, "text/plain", root);
+  
+  String ssid = WiFi.SSID();
+  String macAddress = WiFi.macAddress();
+  String ip = WiFi.localIP().toString();
+  String uptime = uptime_formatter::getUptime();
+  String state = String(digitalRead(pin));
+
+  String jsonString = "[";
+  jsonString += "{";
+  jsonString += "\"SSID\":\"" + ssid + "\",";
+  jsonString += "\"MAC\":\"" + macAddress + "\",";
+  jsonString += "\"IP\":\"" + ip + "\",";
+  jsonString += "\"Uptime\":\"" + uptime + "\"";
+  jsonString += "},";
+  jsonString += "{";
+  jsonString += "\"State\":\"" + state + "\"";
+  jsonString += "}";
+  jsonString += "]";
+
+  httpServer.send(302, "text/plain", jsonString);
 }
 
 void uptime() {
