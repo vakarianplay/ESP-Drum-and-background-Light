@@ -5,9 +5,13 @@ Develop for swith relay via crontab with cURL.
 
 --------------------
 
-* Get status
+* Web page
 
 ` curl http://SONOFF_IP/`
+
+* Get state
+
+` curl http://SONOFF_IP/st`
 
 * Switch on
 
@@ -17,7 +21,7 @@ Develop for swith relay via crontab with cURL.
 
 ` curl http://SONOFF_IP/off`
 
-* System information
+* System information (json format)
 
 ` curl http://SONOFF_IP/dev`
 
