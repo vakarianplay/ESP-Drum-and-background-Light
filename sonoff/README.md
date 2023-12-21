@@ -28,6 +28,10 @@ Develop for swith relay via crontab with cURL.
 
 ` curl http://SONOFF_IP/off`
 
+* Toggle state
+
+` curl http://SONOFF_IP/toggleRelay1`
+
 * System information (json format)
 
 ` curl http://SONOFF_IP/dev`
