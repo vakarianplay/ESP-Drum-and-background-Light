@@ -5,6 +5,13 @@ Develop for swith relay via crontab with cURL.
 
 --------------------
 
+**CLI client written by Golang is available here**
+
+* Repository: https://github.com/vakarianplay/GoRelayClient
+* Releases for Windows and Linux https://github.com/vakarianplay/GoRelayClient/releases/tag/v1
+
+--------------------
+
 * Web page
 
 ` curl http://SONOFF_IP/`
