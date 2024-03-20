@@ -109,7 +109,7 @@ const char webpage[] PROGMEM = R"=====(
   <center>
   <div class="centralblock">
   	<div>
-  		<h1>☢️ ESP RADSENS ☢️</h1><br>
+  		<h1>☢️ ESP ☢️</h1><h1>RADSENS</h1><br>
   	</div>
   	 <br>
   	<div>
