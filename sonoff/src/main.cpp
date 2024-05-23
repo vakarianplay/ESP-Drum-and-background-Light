@@ -33,7 +33,7 @@ void handleDev() {
   String macAddress = WiFi.macAddress();
   String ip = WiFi.localIP().toString();
   String uptime = uptime_formatter::getUptime();
-  String state = String(digitalRead(pin));
+  String state = String(digitalRead(12));
 
   String jsonString = "[";
   jsonString += "{";
