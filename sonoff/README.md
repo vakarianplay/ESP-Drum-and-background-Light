@@ -3,6 +3,11 @@
 Lightweight firmware with minimalistic web server.
 Develop for swith relay via crontab with cURL.
 
+
+![alt text](https://img.shields.io/badge/Chip-ESP8266-blue?style=for-the-badge&logo=Espressif) ![alt text](https://img.shields.io/badge/Chip-ESP8265-blue?style=for-the-badge&logo=Espressif)
+
+![alt text](https://img.shields.io/badge/Core-PlatformIO-blue?style=flat-square) ![alt text](https://img.shields.io/badge/сURL-compatible-blue?style=flat-square&logo=curl)
+
 --------------------
 
 **CLI client written by Golang is available here**
