@@ -39,3 +39,8 @@ Develop for swith relay via crontab with cURL.
 * OTA update
 
 ` curl http://SONOFF_IP/firmware`
+
+
+---------------------------------------------------
+
+![image](https://github.com/user-attachments/assets/fca3bfc0-fcf1-4779-9000-9fc1cdc5cf34)
