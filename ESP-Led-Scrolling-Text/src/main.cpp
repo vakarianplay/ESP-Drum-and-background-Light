@@ -16,7 +16,8 @@ const char indexHTML[] PROGMEM = R"rawliteral(
 <body>
 <h1>ESP32 Web Server</h1>
 <form method="POST" action="/save">
-  Value: <input type="text" name="value" id="value" value="%s"><br>
+  Stream url: <input type="text" name="value_url" id="value" value="%s"><br>
+  Scroll speed: <input type="text" name="value_speed" id="value" value="%s"><br>
   <input type="submit" value="Save">
 </form>
 </body>
