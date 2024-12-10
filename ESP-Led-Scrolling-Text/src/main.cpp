@@ -16,8 +16,8 @@ const char indexHTML[] PROGMEM = R"rawliteral(
 <body>
 <h1>ESP32 Web Server</h1>
 <form method="POST" action="/save">
-  Stream url: <input type="text" name="value_url" id="value" value="%s"><br>
-  Scroll speed: <input type="text" name="value_speed" id="value" value="%s"><br>
+  Streaming Url: <input type="text" name="streamingUrl" id="streamingUrl" value="%s"><br>
+  Scrolling Speed: <input type="number" name="scrollingSpeed" id="scrollingSpeed" value="%d"><br>
   <input type="submit" value="Save">
 </form>
 </body>
@@ -25,22 +25,27 @@ const char indexHTML[] PROGMEM = R"rawliteral(
 )rawliteral";
 
 void handleRoot() {
-  String value = preferences.getString("value", "");
-  Serial.println(value);
+  String streamingUrl = preferences.getString("streamingUrl", "");
+  int scrollingSpeed = preferences.getInt("scrollingSpeed", 0); // Default speed 0
+
   char html[512];
-  sprintf(html, indexHTML, value.c_str());
+  sprintf(html, indexHTML, streamingUrl.c_str(), scrollingSpeed);
   server.send(200, "text/html", html);
 }
 
 void handleSave() {
-  String value = server.arg("value");
-  Serial.print("Received value: ");
-  Serial.println(value);
+  String streamingUrl = server.arg("streamingUrl");
+  int scrollingSpeed = server.arg("scrollingSpeed").toInt(); // Convert string to integer
 
-  preferences.putString("value", value);
+  Serial.print("Received Streaming Url: ");
+  Serial.println(streamingUrl);
+  Serial.print("Received Scrolling Speed: ");
+  Serial.println(scrollingSpeed);
+
+  preferences.putString("streamingUrl", streamingUrl);
+  preferences.putInt("scrollingSpeed", scrollingSpeed);
   preferences.end();
-  server.send(200, "text/plain", "Value saved");
-  ESP.restart();
+  server.send(200, "text/plain", "Values saved");
 }
 
 void setup() {
@@ -65,3 +70,4 @@ void setup() {
 void loop() {
   server.handleClient();
 }
+
