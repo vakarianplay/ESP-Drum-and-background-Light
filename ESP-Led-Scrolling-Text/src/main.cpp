@@ -27,7 +27,7 @@ const char indexHTML[] PROGMEM = R"rawliteral(
 <form method="POST" action="/save">
   Streaming Url: <input type="text" name="streamingUrl" id="streamingUrl" value="%s"><br>
   Scrolling Speed: <input type="number" name="scrollingSpeed" id="scrollingSpeed" value="%d"><br>
-  <input type="submit" value="Save">
+  <input type="submit" value="💾 Save and reboot">
 </form>
 </body>
 </html>
@@ -50,11 +50,13 @@ void handleSave() {
   Serial.println(streamingUrl);
   Serial.print("Received Scrolling Speed: ");
   Serial.println(scrollingSpeed);
+  server.send(200, "text/plain", "Parametrs save. Device rebooting...");
 
   preferences.putString("streamingUrl", streamingUrl);
   preferences.putInt("scrollingSpeed", scrollingSpeed);
   preferences.end();
-  server.send(200, "text/plain", "Values saved");
+
+  ESP.restart();
 }
 
 String httpData() {
