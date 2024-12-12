@@ -1,11 +1,17 @@
 #include <ESP8266WebServer.h>
 #include <Preferences.h>
+#include <ESP8266HTTPClient.h>
 
 const char* ssid = "roof";
 const char* password = "12345618";
 
+unsigned long previousMillis = 0;
+const long interval = 3000; 
+
 ESP8266WebServer server(80);
 Preferences preferences;
+WiFiClient client;
+HTTPClient http;
 
 const char indexHTML[] PROGMEM = R"rawliteral(
 <!DOCTYPE HTML><html>
@@ -48,6 +54,20 @@ void handleSave() {
   server.send(200, "text/plain", "Values saved");
 }
 
+String getData() {
+  String payload = "";
+  String url = preferences.getString("streamingUrl", "");
+  if (url.length() > 5) {
+    http.begin(client, url);  
+    int responseCode = http.GET();                                  
+    if (responseCode > 0) { 
+      payload = http.getString();   
+    }
+    http.end();
+  }
+  return payload;
+}
+
 void setup() {
   Serial.begin(9600);
   preferences.begin("my-app", false);
@@ -69,5 +89,12 @@ void setup() {
 
 void loop() {
   server.handleClient();
+  unsigned long currentMillis = millis();
+  if (currentMillis - previousMillis >= interval) {
+    previousMillis = currentMillis;
+    String data = getData();
+    Serial.println(data);
+  }
+  
 }
 
