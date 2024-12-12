@@ -1,6 +1,7 @@
 #include <ESP8266WebServer.h>
 #include <Preferences.h>
-#include <ESP8266HTTPClient.h>
+#include "datagrabber.h"
+// #include <ESP8266HTTPClient.h>
 
 const char* ssid = "roof";
 const char* password = "12345618";
@@ -10,8 +11,10 @@ const long interval = 3000;
 
 ESP8266WebServer server(80);
 Preferences preferences;
-WiFiClient client;
-HTTPClient http;
+DataGrabber dataGrabber;
+// WiFiClient client;
+// HTTPClient http;
+
 
 const char indexHTML[] PROGMEM = R"rawliteral(
 <!DOCTYPE HTML><html>
@@ -54,23 +57,15 @@ void handleSave() {
   server.send(200, "text/plain", "Values saved");
 }
 
-String getData() {
-  String payload = "";
-  String url = preferences.getString("streamingUrl", "");
-  if (url.length() > 5) {
-    http.begin(client, url);  
-    int responseCode = http.GET();                                  
-    if (responseCode > 0) { 
-      payload = http.getString();   
-    }
-    http.end();
-  }
-  return payload;
+String httpData() {
+  String dataget = dataGrabber.getData();
+  return dataget;
 }
 
 void setup() {
   Serial.begin(9600);
   preferences.begin("my-app", false);
+  dataGrabber.setupUrl(preferences.getString("streamingUrl", ""));
 
   WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED) {
@@ -92,9 +87,8 @@ void loop() {
   unsigned long currentMillis = millis();
   if (currentMillis - previousMillis >= interval) {
     previousMillis = currentMillis;
-    String data = getData();
+    String data = httpData();
     Serial.println(data);
   }
-  
 }
 
