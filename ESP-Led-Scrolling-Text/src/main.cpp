@@ -1,44 +1,13 @@
-#include <ESP8266WebServer.h>
-#include <Preferences.h>
-#include "datagrabber.h"
-// #include <ESP8266HTTPClient.h>
-
-const char* ssid = "roof";
-const char* password = "12345618";
-
-unsigned long previousMillis = 0;
-const long interval = 3000; 
-
-ESP8266WebServer server(80);
-Preferences preferences;
-DataGrabber dataGrabber;
-// WiFiClient client;
-// HTTPClient http;
+#include "main.h"
 
 
-const char indexHTML[] PROGMEM = R"rawliteral(
-<!DOCTYPE HTML><html>
-<head>
-<title>ESP32 Web Server</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-</head>
-<body>
-<h1>ESP32 Web Server</h1>
-<form method="POST" action="/save">
-  Streaming Url: <input type="text" name="streamingUrl" id="streamingUrl" value="%s"><br>
-  Scrolling Speed: <input type="number" name="scrollingSpeed" id="scrollingSpeed" value="%d"><br>
-  <input type="submit" value="💾 Save and reboot">
-</form>
-</body>
-</html>
-)rawliteral";
 
 void handleRoot() {
   String streamingUrl = preferences.getString("streamingUrl", "");
   int scrollingSpeed = preferences.getInt("scrollingSpeed", 0); // Default speed 0
 
-  char html[512];
-  sprintf(html, indexHTML, streamingUrl.c_str(), scrollingSpeed);
+  char html[1024];
+  sprintf(html, webpage, streamingUrl.c_str(), scrollingSpeed);
   server.send(200, "text/html", html);
 }
 
@@ -81,6 +50,7 @@ void setup() {
 
   server.on("/", handleRoot);
   server.on("/save", HTTP_POST, handleSave);
+  httpUpdater.setup(&server, "/firmware");
   server.begin();
 }
 
