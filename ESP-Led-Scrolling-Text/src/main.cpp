@@ -1,19 +1,18 @@
 #include "main.h"
 
-
-
 void handleRoot() {
   String streamingUrl = preferences.getString("streamingUrl", "");
-  int scrollingSpeed = preferences.getInt("scrollingSpeed", 0); // Default speed 0
+  int scrollingSpeed = preferences.getInt("scrollingSpeed", 0);
 
-  char html[1024];
-  sprintf(html, webpage, streamingUrl.c_str(), scrollingSpeed);
-  server.send(200, "text/html", html);
+  String s = webpage;
+  s.replace("{stream}", streamingUrl);
+  s.replace("{speed}", String(scrollingSpeed));
+  server.send(200, "text/html", s);
 }
 
 void handleSave() {
   String streamingUrl = server.arg("streamingUrl");
-  int scrollingSpeed = server.arg("scrollingSpeed").toInt(); // Convert string to integer
+  int scrollingSpeed = server.arg("scrollingSpeed").toInt();
 
   Serial.print("Received Streaming Url: ");
   Serial.println(streamingUrl);
