@@ -1,5 +1,5 @@
-#include <ESP8266WebServer.h>
-#include <ESP8266HTTPUpdateServer.h>
+#include <WebServer.h>
+#include <HTTPUpdateServer.h>
 #include <Preferences.h>
 #include "datagrabber.h"
 #include <Arduino.h>
@@ -10,8 +10,8 @@ const char* password = "12345618";
 unsigned long previousMillis = 0;
 const long interval = 3000; 
 
-ESP8266HTTPUpdateServer httpUpdater;
-ESP8266WebServer server(80);
+HTTPUpdateServer httpUpdater;
+WebServer server(80);
 Preferences preferences;
 DataGrabber dataGrabber;
 
