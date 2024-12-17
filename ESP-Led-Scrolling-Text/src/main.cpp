@@ -24,6 +24,10 @@ void handleSave() {
   preferences.putInt("scrollingSpeed", scrollingSpeed);
   preferences.end();
 
+  delay(1000);
+  handleRoot();
+  delay(300);
+
   ESP.restart();
 }
 
