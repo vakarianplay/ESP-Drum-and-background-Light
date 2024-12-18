@@ -25,8 +25,6 @@ void handleSave() {
   preferences.end();
 
   delay(1000);
-  handleRoot();
-  delay(300);
 
   ESP.restart();
 }

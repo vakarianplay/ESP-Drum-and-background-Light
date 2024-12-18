@@ -15,9 +15,6 @@ WebServer server(80);
 Preferences preferences;
 DataGrabber dataGrabber;
 
-// WiFiClient client;
-// HTTPClient http;
-
 
 const char webpage[] PROGMEM = R"=====(
 <!DOCTYPE html>
