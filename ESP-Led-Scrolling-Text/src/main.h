@@ -3,13 +3,15 @@
 #include <Preferences.h>
 #include "datagrabber.h"
 #include <Arduino.h>
+#include <WiFiManager.h>
 
-const char* ssid = "roof";
-const char* password = "12345618";
+// const char* ssid = "roof";
+// const char* password = "12345618";
 
 unsigned long previousMillis = 0;
 const long interval = 3000; 
 
+WiFiManager wifiManager;
 HTTPUpdateServer httpUpdater;
 WebServer server(80);
 Preferences preferences;

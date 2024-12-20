@@ -38,8 +38,8 @@ void setup() {
   Serial.begin(9600);
   preferences.begin("my-app", false);
   dataGrabber.setupUrl(preferences.getString("streamingUrl", ""));
+  wifiManager.autoConnect("EspConnect");
 
-  WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED) {
     delay(1000);
     Serial.print(".");
